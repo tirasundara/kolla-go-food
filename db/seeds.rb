@@ -45,3 +45,40 @@ Food.create!(
   image_url: "soto_betawi.jpg",
   price: 16000.00
 )
+
+
+Buyer.delete_all
+Buyer.create!(
+  name: "Tira Sundara",
+  email: "sundaralinus@gmail.com",
+  phone: "085793060639",
+  address: "Jl. Kemana saja"
+)
+
+Buyer.create!(
+  name: "Anugrah Putra",
+  email: "anugrah.putra@gmail.com",
+  phone: "085793060777",
+  address: "Jl. In aja dulu"
+)
+
+Buyer.create!(
+  name: "Rizal Rahman",
+  email: "om.risal@cilsy.id",
+  phone: "089893060666",
+  address: "Jl. Cilsy Fiolution"
+)
+
+Buyer.create!(
+  name: "Kahpiw",
+  email: "the.noob@gmail.com",
+  phone: "085793060444",
+  address: "Jl. Padjajaran No. 666"
+)
+
+Buyer.create!(
+  name: "M. Naufal A",
+  email: "opay@yahoo.co.id",
+  phone: "089893060333",
+  address: "Jl. Batu Jajar Squad"
+)

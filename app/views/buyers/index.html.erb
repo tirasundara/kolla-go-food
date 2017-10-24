@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Buyers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Address</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @buyers.each do |buyer| %>
+      <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+        <td><%= buyer.name %></td>
+        <td><%= buyer.email %></td>
+        <td><%= buyer.phone %></td>
+        <td><%= buyer.address %></td>
+        <td><%= link_to 'Show', buyer %></td>
+        <td><%= link_to 'Edit', edit_buyer_path(buyer) %></td>
+        <td><%= link_to 'Destroy', buyer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Buyer', new_buyer_path %>
