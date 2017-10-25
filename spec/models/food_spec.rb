@@ -42,7 +42,7 @@ describe Food do
     )
     # Method new untuk instantiasi class Food. Karena data name yang di-instance sudah masuk ke dalam database maka akan ruby akan menambahkan method errors
     # pada objek food_dua. Dan kita dapat mengambil dan membandingkan pesan error-nya.
-    # Sehingga test ini menjadi passed. 
+    # Sehingga test ini menjadi passed.
     food_dua = Food.new(
       name: "Nasi uduk",
       description: "Betawi style steamed rice cooked in coconut milk. Delicious!",
@@ -50,5 +50,45 @@ describe Food do
     )
     food_dua.valid?
     expect(food_dua.errors[:name]).to include("has already been taken")
+  end
+
+  it "returns a sorted array of results that match" do
+    food_satu = Food.create(
+      name: "Nasi Uduk",
+      description: "Betawi style steamed rice cooked in coconut milk. Delicious!",
+      price: 10000.0
+    )
+    food_dua = Food.create(
+      name: "Kerak Telor",
+      description: "Betawi traditional spicy omelette made from glutinous rice cooked with egg.",
+      price: 8000.0
+    )
+    food_tiga = Food.create(
+      name: "Nasi Semur Jengkol",
+      description: "Based on dongfruit, this menu promises a unique and delicious taste with...",
+      price: 8000.0
+    )
+
+    expect(Food.by_letter("N")).to eq([food_tiga, food_satu])
+  end
+
+  it "omits results that do not match" do
+    food_satu = Food.create(
+      name: "Nasi Uduk",
+      description: "Betawi style steamed rice cooked in coconut milk. Delicious!",
+      price: 10000.0
+    )
+    food_dua = Food.create(
+      name: "Kerak Telor",
+      description: "Betawi traditional spicy omelette made from glutinous rice cooked with egg.",
+      price: 8000.0
+    )
+    food_tiga = Food.create(
+      name: "Nasi Semur Jengkol",
+      description: "Based on dongfruit, this menu promises a unique and delicious taste with...",
+      price: 8000.0
+    )
+
+    expect(Food.by_letter("N")).not_to include(food_dua)
   end
 end
