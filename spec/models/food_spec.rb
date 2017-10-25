@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe Food do
+  # ============ RSpec Without using FactoryGirl ============================================================
   describe "validating presence of name and description" do
     before :each do
       @food = Food.new(
@@ -122,8 +123,9 @@ describe Food do
       end
     end
   end
+  # ==================== End of RSpec Without FactoryGirl ====================================================
 
-  # ==================== Using FactoryGirl ===========================================================
+  # ==================== RSpec with FactoryGirl ===============================================================
   it "has a valid factory" do
     expect(build(:food)).to be_valid
   end
@@ -146,4 +148,41 @@ describe Food do
     food_dua.valid?
     expect(food_dua.errors[:name]).to include("has already been taken")
   end
+
+  it "is valid price" do
+    food = build(:food)
+    expect(food).to be_valid
+  end
+
+  it "is invalid with non-numerical values" do
+    food = build(:food, price: '123hallo')
+    food.valid?
+    expect(food.errors[:price]).to include("is not a number")
+  end
+
+  it "is invalid if price less than 0.01" do
+    food = build(:food, price: 0.0)
+    food.valid?
+    expect(food.errors[:price]).to include("must be greater than or equal to 0.01")
+  end
+
+  it "is valid image url" do
+    food = build(:food)
+    expect(food).to be_valid
+  end
+
+  it "is invalid without .jpg, .gif, or .png image" do
+    food = build(:food, image_url: 'eta.gg')
+    food.valid?
+    expect(food.errors[:image_url]).to include("must be a URL for GIF, JPG, or PNG image.")
+  end
+
+  it "returns a sorted array of results that match" do
+    food2 = create(:food, name: 'Nasi Kuning')
+    food3 = create(:food, name: 'Nasi Goreng')
+    food = create(:food, name: 'Kerak Telor')
+    expect(Food.by_letter("N")).to eq([food3, food2])
+  end
+  # =========== End of RSpec with FactoryGirl =================================================================
+
 end
