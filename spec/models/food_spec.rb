@@ -125,24 +125,24 @@ describe Food do
 
   # ==================== Using FactoryGirl ===========================================================
   it "has a valid factory" do
-    expect(FactoryGirl.build(:food)).to be_valid
+    expect(build(:food)).to be_valid
   end
 
   it "invalid without a name" do
-    food = FactoryGirl.build(:food, name: nil)
+    food = build(:food, name: nil)
     food.valid?
     expect(food.errors[:name]).to include("can't be blank")
   end
 
   it "is invalid without a description" do
-    food = FactoryGirl.build(:food, description: nil)
+    food = build(:food, description: nil)
     food.valid?
     expect(food.errors[:description]).to include("can't be blank")
   end
 
   it "is invalid with a duplicate name" do
-    food_satu = FactoryGirl.create(:food, name: "Nasi Kuning")
-    food_dua = FactoryGirl.build(:food, name: "Nasi Kuning")
+    food_satu = create(:food, name: "Nasi Kuning")
+    food_dua = build(:food, name: "Nasi Kuning")
     food_dua.valid?
     expect(food_dua.errors[:name]).to include("has already been taken")
   end
