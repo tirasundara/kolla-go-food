@@ -1,15 +1,17 @@
 class BuyersController < ApplicationController
-  before_action :set_buyer, only: [:show, :edit, :update, :destroy]
+  # before_action :set_buyer, only: [:show, :edit, :update, :destroy]
 
   # GET /buyers
   # GET /buyers.json
   def index
-    @buyers = Buyer.all
+    # @buyers = Buyer.all
+    @buyers = params[:letter].nil? ? Buyer.all : Buyer.by_letter(params[:letter])
   end
 
   # GET /buyers/1
   # GET /buyers/1.json
   def show
+    @buyer = Buyer.find(params[:id])
   end
 
   # GET /buyers/new
@@ -19,6 +21,7 @@ class BuyersController < ApplicationController
 
   # GET /buyers/1/edit
   def edit
+    @buyer = Buyer.find(params[:id])
   end
 
   # POST /buyers
@@ -40,6 +43,7 @@ class BuyersController < ApplicationController
   # PATCH/PUT /buyers/1
   # PATCH/PUT /buyers/1.json
   def update
+    @buyer = Buyer.find(params[:id])
     respond_to do |format|
       if @buyer.update(buyer_params)
         format.html { redirect_to @buyer, notice: 'Buyer was successfully updated.' }
@@ -54,6 +58,7 @@ class BuyersController < ApplicationController
   # DELETE /buyers/1
   # DELETE /buyers/1.json
   def destroy
+    @buyer = Buyer.find(params[:id])
     @buyer.destroy
     respond_to do |format|
       format.html { redirect_to buyers_url, notice: 'Buyer was successfully destroyed.' }
