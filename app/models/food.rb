@@ -1,4 +1,5 @@
 class Food < ApplicationRecord
+  # Validate
   validates :name, :description, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }
   validates :name, uniqueness: true
@@ -6,4 +7,9 @@ class Food < ApplicationRecord
     with: %r{\.(gif|jpg|png)\z}i,
     message: 'must be a URL for GIF, JPG, or PNG image.'
   }
+
+  def self.by_letter(letter)
+    return nil if letter.nil?
+    where("name LIKE ?", "#{letter}%").order(:name)
+  end
 end

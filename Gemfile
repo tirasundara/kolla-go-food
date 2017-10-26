@@ -41,6 +41,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'rspec-rails', ">= 3.5.2"
   gem 'factory_girl_rails', "~> 4.4.1"
+  gem 'rails-controller-testing'
 end
 
 group :development do
@@ -53,10 +54,11 @@ group :development do
 end
 
 group :test do
-  gem 'faker', "~> 1.4.3"
+  # gem 'faker', "~> 1.4.3"
   # gem 'capybara', "~> 2.4.3"
   gem 'database_cleaner', "~> 1.3.0"
   gem 'launchy', "~> 2.4.2"
+  gem 'faker', git: 'https://github.com/stympy/faker.git'
   # gem 'selenium-webdriver', "~> 2.43.0"
 end
 
