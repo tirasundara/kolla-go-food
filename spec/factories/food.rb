@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :food do
-    name "Nasi Kuning"
+    name {Faker::Food.dish}
     description "nasi bla bla"
     price 10000.0
     image_url "nasi_kuning.png"
