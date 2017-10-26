@@ -9,6 +9,7 @@ class Food < ApplicationRecord
   }
 
   def self.by_letter(letter)
+    return nil if letter.nil?
     where("name LIKE ?", "#{letter}%").order(:name)
   end
 end

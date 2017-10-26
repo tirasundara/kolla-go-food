@@ -1,15 +1,18 @@
 class FoodsController < ApplicationController
-  before_action :set_food, only: [:show, :edit, :update, :destroy]
+  # before_action :set_food, only: [:show, :edit, :update, :destroy]
 
   # GET /foods
   # GET /foods.json
   def index
-    @foods = Food.all
+    # @foods = Food.all
+    # @foods = Food.by_letter(params[:letter])
+    @foods = params[:letter].nil? ? Food.all : Food.by_letter(params[:letter])
   end
 
   # GET /foods/1
   # GET /foods/1.json
   def show
+    @food = Food.find(params[:id])
   end
 
   # GET /foods/new
