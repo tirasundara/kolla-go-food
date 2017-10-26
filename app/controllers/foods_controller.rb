@@ -22,6 +22,7 @@ class FoodsController < ApplicationController
 
   # GET /foods/1/edit
   def edit
+    @food = Food.find(params[:id])
   end
 
   # POST /foods
@@ -43,6 +44,7 @@ class FoodsController < ApplicationController
   # PATCH/PUT /foods/1
   # PATCH/PUT /foods/1.json
   def update
+    @food = Food.find(params[:id])
     respond_to do |format|
       if @food.update(food_params)
         format.html { redirect_to @food, notice: 'Food was successfully updated.' }
@@ -57,6 +59,7 @@ class FoodsController < ApplicationController
   # DELETE /foods/1
   # DELETE /foods/1.json
   def destroy
+    @food = Food.find(params[:id])
     @food.destroy
     respond_to do |format|
       format.html { redirect_to foods_url, notice: 'Food was successfully destroyed.' }
