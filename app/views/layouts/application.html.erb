@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Go-Food</title>
+    <title>The Simplified Go Food Web App</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +9,21 @@
   </head>
 
   <body class="<%= controller.controller_name %>">
-    <%= yield %>
+    <div id="banner">
+      <%= image_tag 'go-food.png', alt: "Simplified Go Food" %>
+      <span class="title"><%= @page_title %></span>
+    </div>
+    <div id="columns">
+      <div id="side">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">My Orders</a></li>
+        </ul>
+      </div>
+      <div id="main">
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>
