@@ -14,7 +14,7 @@ class Food < ApplicationRecord
     where("name LIKE ?", "#{letter}%").order(:name)
   end
 
-  has_many :line_items
+  has_many :line_items    # Food has many LineItems
   private
     def ensure_not_referenced_by_any_line_item
       unless line_items.empty?
