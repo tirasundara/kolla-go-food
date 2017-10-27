@@ -5,6 +5,34 @@ describe LineItemsController do
     before :each do
       @food = create(:food)
     end
+
+    context "with existing food" do
+      it "does not add a new line_item in the database" do
+        cart = create(:cart)
+        line_item = create(:line_item, food: @food, cart: cart)
+
+        expect {
+          post :create, params: { food_id: @food.id }
+        }.not_to change(LineItem, :count)
+      end
+
+      it "increments the quantity of line_item with the same food" do
+        cart = create(:cart)
+        line_item = create(:line_item, food: @food, cart: cart)
+        post :create, params: { food_id: @food.id }
+
+        expect(line_item.quantity).to eq(2)
+      end
+    end
+
+    context "without existing food" do
+      it "saves the new line_item in the database" do
+        expect {
+          post :create, params: { food_id: @food_id }
+        }.to change(LineItem, :count).by(1)
+      end
+    end
+
     it "includes CurrentCart" do
       expect(LineItemsController.ancestors.include? CurrentCart).to eq(true)
     end
