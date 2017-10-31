@@ -4,6 +4,8 @@ FactoryGirl.define do
     description "nasi bla bla"
     price 10000.0
     image_url "nasi_kuning.png"
+
+    association :category
   end
 
   factory :invalid_food, parent: :food do

@@ -25,7 +25,8 @@
         <td class="list_description">
           <dl>
             <dt><%= food.name %></dt>
-            <dt><%= truncate(strip_tags(food.description), length: 80) %></dt>
+            <dd><%= truncate(strip_tags(food.description), length: 80) %></dd>
+            <dd>Category: <%= food.category.try(:name) %></dd>
           </dl>
         </td>
         <td><%= food.price %></td>

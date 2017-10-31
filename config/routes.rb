@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :buyers
   resources :foods
   resources :line_items
+  resources :categories
   get 'home/hello'
   get 'home/goodbye'
 

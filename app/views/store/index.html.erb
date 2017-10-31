@@ -4,7 +4,7 @@
   <div class="entry">
     <%= image_tag(food.image_url) %>
     <h3><%= link_to food.name, food %></h3>
-    <%= sanitize(food.description) %>     <!-- preventing from XSS -->
+    <p><%= sanitize(food.description) %></p>     <!-- preventing from XSS -->
     <div class="price_line">
       <span class="price">
         <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
