@@ -2,7 +2,9 @@
 
 FactoryGirl.define do
   factory :category do
-    name "kuah"
+    sequence :name do |n|
+      "kategori#{n}"
+    end
   end
 
   factory :invalid_category, parent: :category do

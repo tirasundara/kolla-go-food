@@ -29,7 +29,7 @@ RSpec.describe Cart, type: :model do
       expect { cart.add_food(food).save }.to change(LineItem, :count).by(1)
     end
   end
-  
+
   it "can calculate total_price" do
     cart = create(:cart)
     food1 = create(:food, name: "Food 1", price: 10000.0)

@@ -14,6 +14,10 @@ RSpec.describe StoreController, type: :controller do
       get :index
       expect(assigns(:foods)).to eq([kerak_telor, nasi_uduk])
     end
+
+    it "includes CurrentCart" do
+      expect(StoreController.ancestors.include? CurrentCart).to eq(true)
+    end
   end
 
 end
