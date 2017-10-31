@@ -18,12 +18,12 @@ describe LineItem do
     expect { cart.destroy }.to change { LineItem.count }.by(-2)
   end
 
-  it "can calculate total_price" do
-    cart = create(:cart)
-    food1 = create(:food)
-    food2 = create(:food, price: 5000)
-    line_item2 = create(:line_item, cart: cart, food: food2, quantity: 4)
+  # it "can calculate total_price" do
+  #  cart = create(:cart)
+  #  food1 = create(:food)
+  #  food2 = create(:food, price: 5000)
+  #  line_item2 = create(:line_item, cart: cart, food: food2, quantity: 4)
 
-    expect(line_item2.total_price.to_f).to eq(20000.0) #  .to_f biar float nya gak pake notasi e
-  end
+  #  expect(line_item2.total_price.to_f).to eq(20000.0) #  .to_f biar float nya gak pake notasi e
+  # end
 end

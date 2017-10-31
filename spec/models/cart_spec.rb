@@ -1,33 +1,42 @@
 require 'rails_helper'
 
 RSpec.describe Cart, type: :model do
-  before :each do
-    @food = create(:food, name: 'Sama')
-    @cart = Cart.new
-  end
-  # pending "add some examples to (or delete) #{__FILE__}"
-  it "does not change the number of line item if the same food is added" do
-    cart = create(:cart)
-    food = create(:food, name: 'Nasi Uduk')
-    line_item = create(:line_item, food: food, cart: cart)
-    expect { cart.add_food(food) }.not_to change(LineItem, :count)
-  end
-  it "increment the qty of line_item if the same food is added" do
-    cart = create(:cart)
-    food = create(:food, name: 'Nasi Uduk')
-    line_item = create(:line_item, food: food, cart: cart)
-    expect(cart.add_food(food).quantity).to eq(2)
-    #expect { cart.add_food(food) }.to change(line_item.quantity, :count)
-  end
+  # before :each do
+  #  @food = create(:food)
+  #  @cart = Cart.new
+  # end
+  context "with existing line_item with the same food" do
+    before :each do
+      @cart = create(:cart)
+      @food = create(:food)
+      @line_item = create(:line_item, food: @food, cart: @cart)
+    end
 
-  it "returns total_price as sum of items price" do
+    it "does not save the new line_item in the database" do
+      expect { @cart.add_food(@food).save }.not_to change(LineItem, :count)
+    end
+
+    it "increments the quantity of line_item with the same food" do
+      expect { @cart.add_food(@food).save }.to change {
+        @cart.line_items.find_by(food_id: @food.id).quantity
+      }.by(1)
+    end
+  end
+  context "without existing line_item with the same food" do
+    it "saves the new line_item in the database" do
+      cart = create(:cart)
+      food = create(:food)
+      expect { cart.add_food(food).save }.to change(LineItem, :count).by(1)
+    end
+  end
+  
+  it "can calculate total_price" do
     cart = create(:cart)
-    food1 = create(:food)
-    food2 = create(:food, price: 5000)
+    food1 = create(:food, name: "Food 1", price: 10000.0)
+    food2 = create(:food, name: "Food 2", price: 15000.0)
+    line_item1 = create(:line_item, quantity: 3, food: food1, cart: cart)
+    line_item2 = create(:line_item, quantity: 1, food: food2, cart: cart)
 
-    line_item1 = create(:line_item, cart: cart, food: food1, quantity: 2)
-    line_item2 = create(:line_item, cart: cart, food: food2, quantity: 4)
-
-    expect(cart.total_price.to_f).to eq(40000.0) #  .to_f biar float nya gak pake notasi e
+    expect(cart.total_price).to eq(45000.0)
   end
 end
