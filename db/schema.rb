@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101064817) do
+ActiveRecord::Schema.define(version: 20171101073117) do
 
   create_table "buyers", force: :cascade do |t|
     t.string "name"
@@ -58,8 +58,10 @@ ActiveRecord::Schema.define(version: 20171101064817) do
     t.integer "cart_id"
     t.integer "quantity", default: 1, null: false
     t.integer "drink_id"
+    t.integer "order_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["food_id"], name: "index_line_items_on_food_id"
+    t.index ["order_id"], name: "index_line_items_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|

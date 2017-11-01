@@ -43,4 +43,24 @@ describe Order do
   it "is invalid with wrong payment_type" do
     expect{ build(:order, payment_type: "Grab Pay") }.to raise_error(ArgumentError)
   end
+
+  describe "adding line_items from cart" do
+    before :each do
+      @cart = create(:cart)
+      @line_item = create(:line_item, cart: @cart)
+      @order = build(:order)
+    end
+    it "add line_items to order" do
+      expect {
+        @order.add_line_items(@cart)
+        @order.save
+      }.to change(@order.line_items, :count).by(1)
+    end
+    it "removes line_items from cart" do
+      expect {
+        @order.add_line_items(@cart)
+        @order.save
+      }.to change(@cart.line_items, :count).by(-1)
+    end
+  end
 end
