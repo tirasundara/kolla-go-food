@@ -1,6 +1,9 @@
 FactoryGirl.define do
   factory :food do
-    name {Faker::Food.dish}
+    association :category
+    sequence :name do |n|
+      "food#{n}"
+    end
     description "nasi bla bla"
     price 10000.0
     image_url "nasi_kuning.png"

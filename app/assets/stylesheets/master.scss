@@ -26,6 +26,25 @@ body, body > p, body > ol, body > ul, body > td {margin: 8px !important}
 #columns {
   background: #fff;
   display: flex;
+  #side {
+      padding: 1em 2em;
+      background: #141;
+      form, div {
+        display: inline;
+      }
+      input {
+        font-size: small;
+      }
+    }
+  #cart {
+        font-size: smaller;
+        color: white;
+        table {
+          border-top: 1px dotted #595;
+          border-bottom: 1px dotted #595;
+          margin-bottom: 10px;
+        }
+  }
 
   #main {
     padding: 1em;
@@ -68,7 +87,7 @@ body, body > p, body > ol, body > ul, body > td {margin: 8px !important}
   }
 }
 
-.buyers, .foods {
+.buyers, .foods, .categories {
   table {
     border-collapse: collapse;
   }
@@ -114,4 +133,14 @@ body, body > p, body > ol, body > ul, body > td {margin: 8px !important}
   .list_line_odd {
     background: #f8b0f8;
   }
+}
+.carts, #side #cart {
+ .item_price, .total_line {
+   text-align: right;
+ }
+
+ .total_line, .total_cell {
+   font-weight: bold;
+   border-top: 1px solid #595;
+ }
 }
