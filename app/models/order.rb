@@ -15,6 +15,8 @@ class Order < ApplicationRecord
   def add_line_items(cart)
     cart.line_items.each do |item|
       item.cart_id = nil
+      # item.order_id = self.id
+      # ekivalen
       line_items << item
     end
   end
