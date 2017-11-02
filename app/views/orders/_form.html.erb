@@ -9,23 +9,28 @@
       </ul>
     </div>
   <% end %>
+
   <div class="field">
     <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, size: 40 %>
   </div>
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
+
   <div class="field">
     <%= f.label :address %>
-    <%= f.text_area :address %>
+    <%= f.text_area :address, rows: 3, cols: 60 %>
   </div>
+
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.text_field :email, size: 40 %>
+  </div>
+
   <div class="field">
     <%= f.label :payment_type %>
-    <% # tambahkan drop down box %>
+    <%= f.select :payment_type, Order.payment_types.keys, prompt: "Select a payment type" %>
   </div>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Place Order" %>
   </div>
 <% end %>
