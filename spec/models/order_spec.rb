@@ -63,4 +63,14 @@ describe Order do
       }.to change(@cart.line_items, :count).by(-1)
     end
   end
+
+  it "can calculate total_price" do
+   cart = create(:cart)
+   food1 = create(:food, price: 20000.00)
+   food2 = create(:food, price: 5000.00)
+   line_item1 = create(:line_item, cart: cart, food: food1, quantity: 2)
+   line_item2 = create(:line_item, cart: cart, food: food2, quantity: 2)
+   order = create(:order, line_items: [line_item1, line_item2])
+   expect(order.total_price).to eq(50000.0)
+  end
 end

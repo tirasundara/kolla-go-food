@@ -1,14 +1,25 @@
 <h1>Orders</h1>
 <table>
+  <tr>
+    <td>Id</td>
+    <td>Name</td>
+    <td>Address</td>
+    <td>Email</td>
+    <td>Payment type</td>
+    <td>Total Price</td>
+    <td>Actions</td>
+  </tr>
   <% @orders.each do |order| %>
     <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+      <td><%= link_to order.id, order %></td>
       <td><%= order.name %></td>
-      <td><%= order.email %></td>
       <td><%= order.address %></td>
+      <td><%= order.email %></td>
       <td><%= order.payment_type %></td>
+      <td><%= number_to_currency(order.total_price, unit: "Rp. ", delimiter: ".", separator: ",")  %></td>
 
       <td>
-        <%= link_to 'Show', order %>
+        <% # link_to 'Show', order %>
         <%= link_to 'Edit', edit_order_path(order) %>
         <%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %>
       </td>
@@ -16,4 +27,4 @@
   <% end %>
 </table>
 <br />
-<%= link_to 'New Order', new_order_path %>
+<% # link_to 'New Order', new_order_path %>
