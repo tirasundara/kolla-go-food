@@ -27,7 +27,8 @@
   <strong>Line Items:</strong>
   <ul>
   <% @order.line_items.each do|line_item| %>
-    <% line_items_content = "#{line_item.quantity}x #{line_item.food.name} Rp. #{line_item.total_price}" %>
+    <% line_item_price = number_to_currency(line_item.total_price, unit: "Rp. ", delimiter: ".", separator: ",") %>
+    <% line_items_content = "#{line_item.quantity}x #{line_item.food.name} #{line_item_price}" %>
     <li><%= line_items_content %></li>
   <% end %>
   </ul>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101073117) do
+ActiveRecord::Schema.define(version: 20171102065620) do
 
   create_table "buyers", force: :cascade do |t|
     t.string "name"
@@ -32,16 +32,6 @@ ActiveRecord::Schema.define(version: 20171101073117) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "drinks", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "image_url"
-    t.decimal "price", precision: 8, scale: 2
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "category_id"
-  end
-
   create_table "foods", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -57,7 +47,6 @@ ActiveRecord::Schema.define(version: 20171101073117) do
     t.integer "food_id"
     t.integer "cart_id"
     t.integer "quantity", default: 1, null: false
-    t.integer "drink_id"
     t.integer "order_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["food_id"], name: "index_line_items_on_food_id"
@@ -74,8 +63,8 @@ ActiveRecord::Schema.define(version: 20171101073117) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username", null: false
-    t.string "fullname"
+    t.string "username"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

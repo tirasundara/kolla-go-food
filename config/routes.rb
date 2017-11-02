@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :line_items
   resources :categories
   resources :orders
+  resources :users
   get 'home/hello'
   get 'home/goodbye'
 
