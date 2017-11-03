@@ -2,7 +2,7 @@ class Category < ApplicationRecord
   has_many :foods # , dependent: :destroy
   validates :name, presence: true, uniqueness: true
 
-  before_destroy :enusre_not_referenced_by_any_food
+  before_destroy :ensure_not_referenced_by_any_line_item
 
   def self.can_be_deleted?(cat_id)
     delete = false

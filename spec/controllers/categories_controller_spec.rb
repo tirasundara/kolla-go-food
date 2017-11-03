@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe CategoriesController, type: :controller do
+  before :each do
+    @user = create(:user)
+    session[:user_id] = @user.id
+  end
   it "populates an array of all categories" do
     dessert = create(:category, name: 'Dessert')
     main_course = create(:category, name: 'Main Course')
@@ -25,20 +29,21 @@ RSpec.describe CategoriesController, type: :controller do
     category = create(:category)
     food1 = create(:food, category: category)
     food2 = create(:food, category: category)
-    get :show, params { id: category }
+    get :show, params: { id: category }
     expect(assigns(:category).foods).to match_array([food1, food2])
   end
 
   it "renders :show template" do
     category = create(:category)
-    get :show, params { id: category }
+    get :show, params: { id: category }
     expect(response).to render_template :show
   end
 
   describe "GET#new" do
     it "assigns a new category to @category" do
+      category = build(:category)
       get :new
-      expect(assigns(:category)).to be_a_new(category)
+      expect(assigns(:category)).to be_a_new(Category)
     end
     it "renders the :new template" do
       get :new
@@ -49,7 +54,7 @@ RSpec.describe CategoriesController, type: :controller do
   describe "GET#edit" do
     it "assigns the requested category to @category" do
       category = create(:category)
-      get :edit, params { id: category }
+      get :edit, params: { id: category }
       expect(assigns(:category)).to eq category
     end
     it "renders the edit template" do
@@ -87,30 +92,27 @@ RSpec.describe CategoriesController, type: :controller do
     end
   end
 
-  describe "DELETE#destroy" do
+  describe 'DELETE #destroy' do
     before :each do
       @category = create(:category)
     end
-    context "with associated foods" do
-      it "does not delete the category from the database" do
-        food = create(:food, category: @category)
-        expect{
-          delete :destroy, params: { id: @category }
-        }.not_to change(Category, :count)
-      end
+
+    it 'does not delete the category from database if some food is using it' do
+      food = create(:food, category: @category)
+      expect{
+        delete :destroy, params: { id: @category }
+      }.not_to change(Category, :count)
     end
 
-    context "without associated foods" do
-      it "deletes the category from the database" do
-        expect{
-          delete :destroy, params: { id: @category }
-        }.to change(Category, :count).by(-1)
-      end
-
-      it "redirects to categories#index" do
+    it 'deletes the category from the database if no food is using it' do
+      expect{
         delete :destroy, params: { id: @category }
-        expect(response).to redirect_to categories_url
-      end
+      }.to change(Category, :count).by(-1)
+    end
+
+    it 'redirects to category#index' do
+      delete :destroy, params: { id: @category }
+      expect(response).to redirect_to(categories_path)
     end
   end
 end

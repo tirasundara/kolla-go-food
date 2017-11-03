@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe OrdersController do
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
   it "includes CurrentCart" do
     expect(OrdersController.ancestors.include? CurrentCart).to eq(true)
   end
@@ -96,6 +100,11 @@ describe OrdersController do
         post :create, params: { order: attributes_for(:order) }
         expect(response).to redirect_to store_index_path
       end
+      it "sends order confirmation email" do
+        expect {
+          post :create, params: { order: attributes_for(:order) }
+        }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
     end
     context "with invalid attributes" do
       it "does not save the new Order in the database" do
@@ -146,7 +155,7 @@ describe OrdersController do
     before :each do
       @order = create(:order)
     end
-    it "deltes order from the database" do
+    it "deletes order from the database" do
       expect{
         delete :destroy, params: { id: @order }
       }.to change(Order, :count).by(-1)

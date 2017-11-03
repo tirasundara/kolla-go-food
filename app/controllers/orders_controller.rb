@@ -31,6 +31,8 @@ class OrdersController < ApplicationController
         # @cart.destroy
         session[:cart_id] = nil
 
+        OrderMailer.received(@order).deliver
+
         format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
         format.json { render :show, status: :created, location: store_index_path }
       else

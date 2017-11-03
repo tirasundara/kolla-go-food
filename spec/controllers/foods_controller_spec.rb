@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe FoodsController do
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
   describe 'GET #index' do
     context 'with params[:letter]' do
       it "populates an array of foods starting with the letter" do

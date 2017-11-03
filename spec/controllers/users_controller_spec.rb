@@ -1,12 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :controller do
+  before :each do
+    @user = create(:user)
+    session[:user_id] = @user.id
+  end
   describe "GET #index" do
     it "populates an array of all users" do
       user1 = create(:user, username: "Anugrah")
       user2 = create(:user, username: "Badi")
       get :index
-      expect(assigns(:users)).to match_array([user1, user2])
+      expect(assigns(:users)).to match_array([@user, user1, user2])
     end
     it "renders the :index template" do
       get :index
@@ -45,6 +49,10 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe "POST #create" do
+    before :each do
+      user = create(:user)
+      session[:user_id] = user.id
+    end
     before :each do
       @user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
     end

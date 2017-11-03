@@ -65,6 +65,7 @@ group :test do
   gem 'launchy', "~> 2.4.2"
   gem 'faker', git: 'https://github.com/stympy/faker.git'
   # gem 'selenium-webdriver', "~> 2.43.0"
+  gem 'email_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
