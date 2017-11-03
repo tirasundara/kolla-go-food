@@ -3,6 +3,7 @@ class LineItemsController < ApplicationController
   # sebelum melakukan aksi apapun panggil dulu set_cart (di Modul CurrentCart), eh gak semua aksi deng
   # cuma pas sebelum aksi create aja
   before_action :set_cart, only: [:create]
+  skip_before_action :authorize, only: :create
 
   def create
     food = Food.find(params[:food_id])

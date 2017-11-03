@@ -3,6 +3,7 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: [:new, :create, :index]
   before_action :cart_not_empty, only: [:new]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authorize, only: [:new, :create]
 
   def index
     @orders = Order.all
