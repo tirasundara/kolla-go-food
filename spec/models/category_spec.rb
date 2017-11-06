@@ -27,6 +27,6 @@ RSpec.describe Category, type: :model do
     category = create(:category)
     food = create(:food, category: category)
 
-    expect { category.destroy }.not_to change(category, :count)
+    expect { category.destroy }.not_to change(Category, :count)
   end
 end

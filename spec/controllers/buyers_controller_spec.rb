@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe BuyersController do
+  before :each do
+    user = create(:user)
+    session[:user_id] = user.id
+  end
   describe 'GET #index' do
     context 'with params[:letter]' do
       it "populates an array of buyers starting with the letter" do

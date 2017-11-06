@@ -1,0 +1,43 @@
+<p>
+  <strong>Id:</strong>
+  <%= @order.id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @order.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @order.address %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @order.email %>
+</p>
+
+<p>
+  <strong>Payment type:</strong>
+  <%= @order.payment_type %>
+</p>
+
+<p>
+  <strong>Line Items:</strong>
+  <ul>
+  <% @order.line_items.each do|line_item| %>
+    <% line_item_price = number_to_currency(line_item.total_price, unit: "Rp. ", delimiter: ".", separator: ",") %>
+    <% line_items_content = "#{line_item.quantity}x #{line_item.food.name} #{line_item_price}" %>
+    <li><%= line_items_content %></li>
+  <% end %>
+  </ul>
+</p>
+
+<p>
+  <strong>Total Price:</strong>
+  <%= number_to_currency(@order.total_price, unit: "Rp. ", delimiter: ".", separator: ",") %>
+</p>
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>
