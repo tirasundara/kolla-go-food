@@ -75,4 +75,14 @@ RSpec.describe Voucher, type: :model do
     voucher.valid?
     expect(voucher.errors[:max_amount]).to include("must be greater than or equal to 0.01")
   end
+
+  describe "Check voucher validity" do
+    context "valid voucher" do
+      it "is valid if (today's date <= valid_through && today's date >= valid_from)" do
+        voucher = create(:voucher, valid_from: "2017-11-01 00:00:01", valid_through: "2017-12-31 23:59:59")
+        expect(voucher.valid_voucher?).to eq(true)
+      end
+    end
+  end
+
 end

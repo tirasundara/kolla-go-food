@@ -73,4 +73,43 @@ describe Order do
    order = create(:order, line_items: [line_item1, line_item2])
    expect(order.total_price).to eq(50000.0)
   end
+
+  describe "calucate the discount and total price after discount" do
+    before :each do
+      @cart = create(:cart)
+      @food1 = create(:food, price: 20000.00)
+      @food2 = create(:food, price: 5000.00)
+      @line_item1 = create(:line_item, cart: @cart, food: @food1, quantity: 2)
+      @line_item2 = create(:line_item, cart: @cart, food: @food2, quantity: 2)
+      @voucher1 = create(:voucher, unit: 1, amount: 100000.00, max_amount: 110000.00)
+      @voucher2 = create(:voucher, unit: 0, amount: 10.00, max_amount: 5100.00)
+      @expired_voucher = create(:voucher, valid_through:"2017-10-01 21:00:00", unit: 0, amount: 90.00, max_amount: 990000.00)
+    end
+    context "with unit = IDR" do
+      it "can calculate IDR discount" do
+        order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
+        expect(order.calculate_discount.to_f).to eq(100000.0)
+      end
+    end
+    context "with unit = %" do
+      it "can calculate percentage discount" do
+        order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher2)
+        expect(order.calculate_discount.to_f).to eq(5000.00)
+      end
+    end
+
+    context "when total_price_after_discount <= 0" do
+      it "can calculate total price after discount" do
+        order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
+        expect(order.total_price_after_discount).to eq(0.00)
+      end
+    end
+    context "when the voucher is expired" do
+      it "returns the normal total price (without disc)" do
+        order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @expired_voucher)
+        expect(order.total_price_after_discount).to eq(50000.0)
+      end
+    end
+  end
+
 end

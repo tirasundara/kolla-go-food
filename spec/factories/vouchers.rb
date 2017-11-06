@@ -2,12 +2,12 @@
 
 FactoryGirl.define do
   factory :voucher do
-    code "MyString"
-    valid_from "2017-11-06 13:24:16"
-    valid_through "2017-11-30 13:24:16"
-    amount "9.99"
+    code "HEMAT10K"
+    valid_from "2017-11-01 13:24:16"
+    valid_through "2017-12-31 23:59:59"
+    amount "10000"
     unit 1
-    max_amount "9.99"
+    max_amount "10000"
   end
 
   factory :invalid_voucher, parent: :voucher do

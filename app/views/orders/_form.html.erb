@@ -26,6 +26,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :voucher_id %>
+    <%= f.collection_select :voucher_id, Voucher.order(:code), :id, :code, include_blank: true %>
+  </div>
+
+  <div class="field">
     <%= f.label :payment_type %>
     <%= f.select :payment_type, Order.payment_types.keys, prompt: "Select a payment type" %>
   </div>

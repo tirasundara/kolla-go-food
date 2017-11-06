@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :order do
+    association :voucher
     name { Faker::Name.name }
     address { Faker::Address.street_address }
     email { Faker::Internet.email }

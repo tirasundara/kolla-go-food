@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
       @order = Order.find(params[:id])
     end
     def order_params
-      params.require(:order).permit(:name, :email, :address, :payment_type)
+      params.require(:order).permit(:name, :email, :address, :voucher_id, :payment_type)
     end
     def cart_not_empty
       if @cart.line_items.empty?
