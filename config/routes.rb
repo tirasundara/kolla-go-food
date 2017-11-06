@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :categories
   resources :orders
   resources :users
+  resources :vouchers
 
   # get 'home/hello'
   # get 'home/goodbye'
