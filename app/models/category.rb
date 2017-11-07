@@ -18,5 +18,4 @@ class Category < ApplicationRecord
         throw :abort
       end
     end
-
 end

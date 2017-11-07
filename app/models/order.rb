@@ -27,7 +27,7 @@ class Order < ApplicationRecord
   def calculate_discount
     disc = 0.00
     return disc if voucher == nil
-    return disc if voucher.valid_voucher? == false
+    return disc if voucher.not_expired? == false
     if voucher.unit == "IDR"
       if voucher.amount <= voucher.max_amount
         disc = voucher.amount

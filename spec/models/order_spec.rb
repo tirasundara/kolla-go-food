@@ -82,19 +82,19 @@ describe Order do
       @line_item1 = create(:line_item, cart: @cart, food: @food1, quantity: 2)
       @line_item2 = create(:line_item, cart: @cart, food: @food2, quantity: 2)
       @voucher1 = create(:voucher, unit: 1, amount: 100000.00, max_amount: 110000.00)
-      @voucher2 = create(:voucher, unit: 0, amount: 10.00, max_amount: 5100.00)
-      @expired_voucher = create(:voucher, valid_through:"2017-10-01 21:00:00", unit: 0, amount: 90.00, max_amount: 990000.00)
+      @voucher2 = create(:voucher, code: "disc", unit: 0, amount: 20.00, max_amount: 10000.0)
+      @expired_voucher = create(:voucher, code: "expired_lol",valid_from:"2017-09-01 21:00:00", valid_through:"2017-10-01 21:00:00", unit: 0, amount: 90.00, max_amount: 990000.00)
     end
     context "with unit = IDR" do
       it "can calculate IDR discount" do
         order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
-        expect(order.calculate_discount.to_f).to eq(100000.0)
+        expect(order.calculate_discount).to eq(100000.0)
       end
     end
     context "with unit = %" do
       it "can calculate percentage discount" do
         order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher2)
-        expect(order.calculate_discount.to_f).to eq(5000.00)
+        expect(order.calculate_discount).to eq(10000.00)
       end
     end
 
