@@ -74,7 +74,7 @@ describe Order do
    expect(order.total_price).to eq(50000.0)
   end
 
-  describe "calucate the discount and total price after discount" do
+  describe "adding voucher" do
     before :each do
       @cart = create(:cart)
       @food1 = create(:food, price: 20000.00)
@@ -85,13 +85,13 @@ describe Order do
       @voucher2 = create(:voucher, code: "disc", unit: 0, amount: 20.00, max_amount: 10000.0)
       @expired_voucher = create(:voucher, code: "expired_lol",valid_from:"2017-09-01 21:00:00", valid_through:"2017-10-01 21:00:00", unit: 0, amount: 90.00, max_amount: 990000.00)
     end
-    context "with unit = IDR" do
+    context "unit = IDR" do
       it "can calculate IDR discount" do
         order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
         expect(order.calculate_discount).to eq(100000.0)
       end
     end
-    context "with unit = %" do
+    context "unit = %" do
       it "can calculate percentage discount" do
         order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher2)
         expect(order.calculate_discount).to eq(10000.00)
@@ -110,6 +110,7 @@ describe Order do
         expect(order.total_price_after_discount).to eq(50000.0)
       end
     end
+    it "returns nil if voucher can't be used yet"
   end
 
 end

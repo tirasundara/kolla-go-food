@@ -17,6 +17,7 @@ class Voucher < ApplicationRecord
   validates :max_amount, presence: true, numericality: { greater_than_or_equal_to: 0.01 }
   validates_with AmountValidator
   validates_with DateValidator
+  # validate :valid_checker
 
   def not_expired?
     now = Time.now.utc

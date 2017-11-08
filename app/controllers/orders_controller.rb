@@ -25,6 +25,11 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     @order.add_line_items(@cart)
 
+    if params["voucher_code"]
+      voucher = Voucher.find_by(code: params["voucher_code"])
+      @order.voucher = voucher if !voucher.nil?
+    end
+
     respond_to do |format|
       if @order.save
         Cart.destroy(session[:cart_id])

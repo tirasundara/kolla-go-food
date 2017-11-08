@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :orders
   resources :users
   resources :vouchers
+  resources :tags
 
   # get 'home/hello'
   # get 'home/goodbye'

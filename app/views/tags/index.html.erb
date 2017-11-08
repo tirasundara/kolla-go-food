@@ -1,0 +1,15 @@
+<h1>Tags</h1>
+<table>
+  <% @tags.each do |tag| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+      <td><%= tag.name %></td>
+      <td>
+        <%= link_to 'Show', tag %>
+        <%= link_to 'Edit', edit_tag_path(tag) %>
+        <%= link_to 'Destroy', tag, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= link_to 'New tag', new_tag_path %>

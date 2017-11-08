@@ -14,6 +14,8 @@ class Order < ApplicationRecord
     message: 'email format is invalid'
   }
   validates :payment_type, inclusion: payment_types.keys
+  validate :validate_voucher_existence
+  validate :validate_voucher_date
 
   def add_line_items(cart)
     cart.line_items.each do |item|
@@ -55,4 +57,19 @@ class Order < ApplicationRecord
       return tot_price
     end
   end
+
+  private
+    def validate_voucher_date
+      if !voucher.nil?
+        now = Time.now
+        if voucher.valid_from > now || voucher.valid_through < now
+          errors.add(:voucher_id, "is invalid")
+        end
+      end
+    end
+    def validate_voucher_existence
+      if voucher.nil?
+        errors.add(:voucher_id, "not found")
+      end
+    end
 end
