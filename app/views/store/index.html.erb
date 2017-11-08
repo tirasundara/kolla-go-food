@@ -1,6 +1,10 @@
 <p id="notice"><%= notice %></p>
 <h1>Your Food Catalog</h1>
-<% @foods.each do |food| %>
+<% @restaurants.each do |restaurant| %>
+<div class="entry">
+  <h3><%= restaurant.name %> </h3>
+  <p>Total food(s): <%= restaurant.foods.count %></p>
+  <% restaurant.foods.each do |food| %>
   <div class="entry">
     <%= image_tag(food.image_url) %>
     <h3><%= link_to food.name, food %></h3>
@@ -10,18 +14,14 @@
         <%= tag.name %>
       <% end %>
     </p>
-    <p>
-      Restaurant:
-      <% if !food.restaurant.nil? %>
-        <%= food.restaurant.name %>
-        (<%= food.restaurant.address %>)
-      <% end %>
-    </p>
-    <div class="price_line">
-      <span class="price">
-        <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
-        <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
-      </span>
-    </div>
   </div>
+
+  <div class="price_line">
+    <span class="price">
+      <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
+      <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
+    </span>
+  </div>
+  <% end %>
+</div>
 <% end %>
