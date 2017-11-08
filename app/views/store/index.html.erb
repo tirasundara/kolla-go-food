@@ -5,6 +5,18 @@
     <%= image_tag(food.image_url) %>
     <h3><%= link_to food.name, food %></h3>
     <p><%= sanitize(food.description) %></p>     <!-- preventing from XSS -->
+    <p>Tag(s):
+      <% food.tags.each do |tag| %>
+        <%= tag.name %>
+      <% end %>
+    </p>
+    <p>
+      Restaurant:
+      <% if !food.restaurant.nil? %>
+        <%= food.restaurant.name %>
+        (<%= food.restaurant.address %>)
+      <% end %>
+    </p>
     <div class="price_line">
       <span class="price">
         <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>

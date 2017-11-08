@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :users
   resources :vouchers
   resources :tags
+  resources :restaurants
 
   # get 'home/hello'
   # get 'home/goodbye'

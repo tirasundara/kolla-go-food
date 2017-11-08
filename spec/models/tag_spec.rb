@@ -19,4 +19,5 @@ RSpec.describe Tag, type: :model do
     tag2.valid?
     expect(tag2.errors[:name]).to include("has already been taken")
   end
+  it "can't be destroyed while it has food(s)"
 end

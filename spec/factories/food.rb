@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :food do
     association :category
+    association :tag
     sequence :name do |n|
       "food#{n}"
     end

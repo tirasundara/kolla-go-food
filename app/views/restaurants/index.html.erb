@@ -1,0 +1,16 @@
+<h1>Restaurants</h1>
+<table>
+  <% @restaurants.each do |restaurant| %>
+    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+      <td><%= restaurant.name %></td>
+      <td><%= restaurant.address %></td>
+      <td>
+        <%= link_to 'Show', restaurant %>
+        <%= link_to 'Edit', edit_restaurant_path(restaurant) %>
+        <%= link_to 'Destroy', restaurant, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br />
+<%= link_to 'New restaurant', new_restaurant_path %>

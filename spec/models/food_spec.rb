@@ -193,6 +193,8 @@ describe Food do
 
     expect { food.destroy }.not_to change(Food, :count)
   end
+
+  
   # =========== End of RSpec with FactoryGirl =================================================================
 
 end

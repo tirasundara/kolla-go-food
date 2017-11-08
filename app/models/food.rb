@@ -1,6 +1,9 @@
 class Food < ApplicationRecord
   before_destroy :ensure_not_referenced_by_any_line_item
   belongs_to :category, optional: true
+  belongs_to :restaurant
+  has_and_belongs_to_many :tags, optional: true
+  has_many :line_items    # Food has many LineItems
 
   # Validate
   validates :name, :description, presence: true
