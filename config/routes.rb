@@ -21,9 +21,9 @@ Rails.application.routes.draw do
   resources :vouchers
   resources :tags
   resources :restaurants
-  resources :reviews
+  # resources :reviews
 
-  # Polymorphic asem
+  # Polymorphic
   resources :foods do
     resources :reviews
   end

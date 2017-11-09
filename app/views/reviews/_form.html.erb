@@ -1,37 +1,28 @@
-<%= form_for(review) do |f| %>
-  <% if review.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(review.errors.count, "error") %>prohibited this review from being saved</h2>
+<%= form_for [@reviewable, @review] do |f| %>
+  <% if @review.errors.any? %>
+    <div class="error_messages">
+      <h2>Please correct the following errors.</h2>
       <ul>
-        <% review.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
+      <% @review.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
       </ul>
     </div>
   <% end %>
-  <fieldset>
-    <legend>Enter Review Details</legend>
 
-    <%= f.hidden_field :reviewable_id, :value => @reviewable.id %>
-    <%= f.hidden_field :reviewable_type, :value => @reviewable.class.name %>
-
-    <div class="field">
-      <%= f.label :name %>
-      <%= f.text_field :name, size: 40 %>
-    </div>
-
-    <div class="field">
-      <%= f.label :title %>
-      <%= f.text_field :title, size: 40 %>
-    </div>
-
-    <div class="field">
-      <%= f.label :description %>
-      <%= f.text_area :description, rows: 10, cols: 60 %>
-    </div>
-
-    <div class="actions">
-      <%= f.submit %>
-    </div>
-  </fieldset>
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, size: 40 %>
+  </div>
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name, size: 40 %>
+  </div>
+  <div class="field">
+    <%= f.label :description %>
+    <%= f.text_area :description, cols:50, rows: 8 %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 <% end %>

@@ -1,15 +1,21 @@
 class ReviewsController < ApplicationController
-  before_action :load_reviewable, only: [:new]
+  before_action :load_reviewable
+
+  def index
+
+  end
+
   def new
-    @reviewable = load_reviewable
-    @review = Review.new
+    # @reviewable = load_reviewable
+    @review = @reviewable.reviews.new
   end
 
   def create
-    @review = Review.new(review_params)
+    # @review = Review.new(review_params)
+    @review = @reviewable.reviews.new(review_params)
     respond_to do |format|
       if @review.save
-        format.html { redirect_to store_index_path, notice: 'Review was successfully created.' }
+        format.html { redirect_to [@reviewable, :reviews], notice: 'Review was successfully created.' }
         format.json { render :show, status: :ok, location: @review }
       else
         format.html { render :new }
@@ -34,9 +40,11 @@ class ReviewsController < ApplicationController
     def load_reviewable
       klass = [Food, Restaurant].detect { |c| params["#{c.name.underscore}_id"] }
       @reviewable = klass.find(params["#{klass.name.underscore}_id"])
+      # resource, id = request.path.split('/')[1,2]
+      # @reviewable = resource.singularize.classify.constantize.find(id)
     end
 
     def review_params
-      params.require(:review).permit(:name, :title, :description, :reviewable_id, :reviewable_type)
+      params.require(:review).permit(:name, :title, :description)
     end
 end
