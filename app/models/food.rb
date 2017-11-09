@@ -4,6 +4,7 @@ class Food < ApplicationRecord
   belongs_to :restaurant
   has_and_belongs_to_many :tags, optional: true
   has_many :line_items    # Food has many LineItems
+  has_many :reviews, as: :reviewable
 
   # Validate
   validates :name, :description, presence: true

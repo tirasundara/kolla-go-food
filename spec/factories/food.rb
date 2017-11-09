@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :food do
     association :category
     association :tag
+    association :restaurant
     sequence :name do |n|
       "food#{n}"
     end

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
+
   resources :carts
   resources :buyers
   resources :foods
@@ -20,6 +21,17 @@ Rails.application.routes.draw do
   resources :vouchers
   resources :tags
   resources :restaurants
+  resources :reviews
+
+  # Polymorphic asem
+  resources :foods do
+    resources :reviews
+  end
+  resources :restaurants do
+    resources :reviews
+  end
+
+
 
   # get 'home/hello'
   # get 'home/goodbye'

@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 <h1>Your Food Catalog</h1>
 <% @restaurants.each do |restaurant| %>
-<div class="entry">
+<div>
   <h3><%= restaurant.name %> </h3>
   <p>Total food(s): <%= restaurant.foods.count %></p>
   <% restaurant.foods.each do |food| %>
@@ -12,15 +12,15 @@
     <p>Tag(s):
       <% food.tags.each do |tag| %>
         <%= tag.name %>
-      <% end %>
+    <% end %>
     </p>
-  </div>
 
   <div class="price_line">
     <span class="price">
       <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
       <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
     </span>
+  </div>
   </div>
   <% end %>
 </div>
