@@ -15,7 +15,7 @@ class ReviewsController < ApplicationController
     @review = @reviewable.reviews.new(review_params)
     respond_to do |format|
       if @review.save
-        format.html { redirect_to [@reviewable, :reviews], notice: 'Review was successfully created.' }
+        format.html { redirect_to store_index_path, notice: 'Review was successfully created.' }
         format.json { render :show, status: :ok, location: @review }
       else
         format.html { render :new }
