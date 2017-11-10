@@ -1,4 +1,5 @@
 class Order < ApplicationRecord
+  # before_save :validate_voucher_existence
   has_many :line_items, dependent: :destroy
   belongs_to :voucher, optional: true
 
@@ -14,7 +15,7 @@ class Order < ApplicationRecord
     message: 'email format is invalid'
   }
   validates :payment_type, inclusion: payment_types.keys
-  validate :validate_voucher_existence
+  # validate :validate_voucher_existence
   validate :validate_voucher_date
 
   def add_line_items(cart)
@@ -67,9 +68,20 @@ class Order < ApplicationRecord
         end
       end
     end
-    def validate_voucher_existence
-      if voucher.nil?
-        errors.add(:voucher_id, "not found")
+    # def validate_voucher_existence
+    #   if voucher.nil?
+    #     errors.add(:voucher_id, "not found")
+    #   end
+    # end
+
+    def self.search(search_params)
+      if search_params.any?
+        orders = where("(name LIKE ?) AND (address LIKE ?) AND (email LIKE ?) AND (total_price >= ?)", "%#{search_params[:name]}%", "%#{search_params[:address]}%", "%#{search_params[:email]}%", "#{search_params[:min_total_price]}".to_f)
+        orders = orders.where("total_price <= ?", "#{search_params[:max_total_price]}".to_f) if search_params[:max_total_price].to_f > 0.0
+        orders = orders.where("payment_type = ?", search_params[:payment_type].to_i) if !search_params[:payment_type].nil?
+      else
+        orders = all
       end
+      orders
     end
 end
