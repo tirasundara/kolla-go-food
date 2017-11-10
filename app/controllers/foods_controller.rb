@@ -1,12 +1,19 @@
 class FoodsController < ApplicationController
   # before_action :set_food, only: [:show, :edit, :update, :destroy]
+  before_action :search_params, only: [:index]
 
   # GET /foods
   # GET /foods.json
   def index
     # @foods = Food.all
     # @foods = Food.by_letter(params[:letter])
-    @foods = params[:letter].nil? ? Food.all : Food.by_letter(params[:letter])
+    @foods = params[:letter].nil? ? Food.search(@hsh_search_params) : Food.by_letter(params[:letter]).search(params[:search_name])
+    # if params[:letter].nil?
+    #   @foods = Food.all
+    # elsif
+    #   @foods = Food.by_letter(params[:letter]).search(params[:search_name])
+    # end
+    # @foods = Food.search(params[:search_name])
   end
 
   # GET /foods/1
@@ -79,5 +86,10 @@ class FoodsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def food_params
       params.require(:food).permit(:name, :description, :image_url, :price, :category_id, :restaurant_id, tag_ids:[])
+    end
+
+    def search_params
+      @hsh_search_params = Hash.new
+      @hsh_search_params= {name: params[:search_name], description: params[:search_description], min_price: params[:search_min_price].to_f, max_price: params[:search_max_price].to_f}
     end
 end

@@ -8,7 +8,8 @@ describe FoodsController do
   describe 'GET #index' do
     context 'with params[:letter]' do
       it "populates an array of foods starting with the letter" do
-        nasi_uduk = create(:food, name: "Nasi Uduk")        # berkaitan dengan FactoryGirl yang udah kita define di spec/factories/food.rb
+        tag = create(:tag)
+        nasi_uduk = create(:food, name: "Nasi Uduk", tag: tag)        # berkaitan dengan FactoryGirl yang udah kita define di spec/factories/food.rb
         kerak_telor = create(:food, name: "Kerak Telor")    # ini juga sama. Method create adalah bawaan FactoryGirl yang kita define di config
         # kerak_telor = create(:food, name: "Kerak Telor")
         get :index, params: { letter: 'N' }
