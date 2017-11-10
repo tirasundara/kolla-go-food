@@ -1,3 +1,31 @@
+<h1>Restaurant Index</h1>
+
+<fieldset>
+  <legend>Search restaurant(s)?</legend>
+  <%= form_tag restaurants_path, :method => 'get' do %>
+    <div class="field">
+      <%= label_tag "Name:" %>
+      <%= text_field_tag :search_name, params[:search_name] %>
+    </div>
+    <div class="field">
+      <%= label_tag "Addres:" %>
+      <%= text_area_tag :search_address, params[:search_address] %>
+    </div>
+
+    <div class="field">
+      <%= label_tag "Minimum food count:" %>
+      <%= text_field_tag :search_min_food_count, params[:search_min_food_count] %>
+    </div>
+    <div class="field">
+      <%= label_tag "Maximum food count:" %>
+      <%= text_field_tag :search_max_food_count, params[:search_max_food_count] %>
+    </div>
+    <div class="actions">
+      <%= submit_tag "Search Restaurant", :name => nil %>
+    </div>
+  <% end %>
+</fieldset>
+
 <h1>Restaurants</h1>
 <table>
   <% @restaurants.each do |restaurant| %>

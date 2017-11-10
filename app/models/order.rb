@@ -78,7 +78,9 @@ class Order < ApplicationRecord
       if search_params.any?
         orders = where("(name LIKE ?) AND (address LIKE ?) AND (email LIKE ?) AND (total_price >= ?)", "%#{search_params[:name]}%", "%#{search_params[:address]}%", "%#{search_params[:email]}%", "#{search_params[:min_total_price]}".to_f)
         orders = orders.where("total_price <= ?", "#{search_params[:max_total_price]}".to_f) if search_params[:max_total_price].to_f > 0.0
-        orders = orders.where("payment_type = ?", search_params[:payment_type].to_i) if !search_params[:payment_type].nil?
+        if !search_params[:payment_type].nil?
+          orders = orders.where("payment_type = ?", search_params[:payment_type].to_i) if !search_params[:payment_type].empty?
+        end
       else
         orders = all
       end

@@ -1,7 +1,9 @@
 class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
+  before_action :search_restaurant_params, only: [:index]
+
   def index
-    @restaurants = Restaurant.all
+    @restaurants = Restaurant.search(search_restaurant_params)
   end
 
   def new
@@ -51,7 +53,17 @@ class RestaurantsController < ApplicationController
     def set_restaurant
       @restaurant = Restaurant.find(params[:id])
     end
+
     def restaurant_params
       params.require(:restaurant).permit(:name, :address)
+    end
+
+    def search_restaurant_params
+      # puts "HAI#{params[:search_name].class}"
+      if !params[:search_name].nil?
+        hsh_search_params = { name: params[:search_name], address: params[:search_address], min_food_count: params[:search_min_food_count], max_food_count: params[:search_max_food_count] }
+      else
+        nil
+      end
     end
 end
