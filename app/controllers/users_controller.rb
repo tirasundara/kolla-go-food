@@ -26,7 +26,7 @@ before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_path, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -38,7 +38,7 @@ before_action :set_user, only: [:show, :edit, :update, :destroy]
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to users_path, notice: 'user was successfully updated.' }
+        format.html { redirect_to @user, notice: 'user was successfully updated.' }
         format.html { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -61,6 +61,6 @@ before_action :set_user, only: [:show, :edit, :update, :destroy]
     end
 
     def user_params
-      params.require(:user).permit(:username, :password, :password_confirmation)
+      params.require(:user).permit(:username, :password, :password_confirmation, role_ids: [])
     end
 end

@@ -10,12 +10,18 @@ describe SessionsController do
 
   describe "POST #create" do
     before :each do
-      @user = create(:user, username: 'user1', password: 'oldpassword', password_confirmation: 'oldpassword')
+      @role1 = create(:role, name: "administrator")
+      @role2 = create(:role, name: "customer")
+      @user = create(:user, username: 'user1', password: 'oldpassword', password_confirmation: 'oldpassword', role_ids: [@role1.id, @role2.id])
     end
     context "with valid username and password" do
       it "assigns user_id to session variables" do
         post :create, params: { username: 'user1', password: 'oldpassword' }
         expect(session[:user_id]).to eq(@user.id)
+      end
+      it "assigns user_roles to session variables" do
+        post :create, params: { username: 'user1', password: 'oldpassword' }
+        expect(session[:user_roles]).to eq(@user.roles)
       end
       it "redirects to admin index page" do
         post :create, params: { username: 'user1', password: 'oldpassword' }

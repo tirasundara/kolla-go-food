@@ -53,10 +53,20 @@ RSpec.describe UsersController, type: :controller do
       user = create(:user)
       session[:user_id] = user.id
     end
-    before :each do
-      @user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
+
+    it "saves the new user in the database" do
+      role1 = create(:role)
+      role2 = create(:role)
+      user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
+      expect {
+        post :create, params: { user: attributes_for(:user, role_ids: [role1.id, role2.id]) }
+      }.to change(User, :count).by(1)
     end
 
+    it "is redirects to user#show" do
+      post :create, params: { user: attributes_for(:user) }
+      expect(response).to redirect_to(user_path(assigns[:user]))
+    end
   end
 
   describe "PATCH #update" do
@@ -75,7 +85,7 @@ RSpec.describe UsersController, type: :controller do
 
       it "redirects to user#index" do
         patch :update, params: { id: @user, user: attributes_for(:user) }
-        expect(response).to redirect_to users_path
+        expect(response).to redirect_to(user_path(assigns[:user]))
       end
 
       it "disables login with old password" do
