@@ -1,28 +1,34 @@
-<%= form_for [@reviewable, @review] do |f| %>
-  <% if @review.errors.any? %>
-    <div class="error_messages">
-      <h2>Please correct the following errors.</h2>
+<%= form_for [reviewable, review] do |f| %>
+  <% if review.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(review.errors.count, "error") %> prohibited this review from being saved:</h2>
+
       <ul>
-      <% @review.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+      <% review.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
   <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title, size: 40 %>
-  </div>
-  <div class="field">
     <%= f.label :name %>
-    <%= f.text_field :name, size: 40 %>
+    <%= f.text_field :name %>
   </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
   <div class="field">
     <%= f.label :description %>
-    <%= f.text_area :description, cols:50, rows: 8 %>
+    <%= f.text_area :description %>
   </div>
+
   <div class="actions">
+    <%= f.hidden_field :reviewable_id, value: @reviewable.id %>
+    <%= f.hidden_field :reviewable_type, value: @reviewable.class.name %>
     <%= f.submit %>
   </div>
 <% end %>

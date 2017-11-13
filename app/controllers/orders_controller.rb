@@ -29,15 +29,18 @@ class OrdersController < ApplicationController
     if params[:voucher_code]
       voucher = Voucher.find_by(code: params["voucher_code"])
       @order.voucher = voucher if !voucher.nil?
+      puts "HELLO..."
     end
-    @order.total_price = @order.total_price
+
+    # @order.calculate_discount
+    @order.total_price = @order.total_price_after_discount
     respond_to do |format|
       if @order.save
         Cart.destroy(session[:cart_id])
         # @cart.destroy
         session[:cart_id] = nil
 
-        # OrderMailer.received(@order).deliver
+        OrderMailer.received(@order).deliver
 
         format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
         format.json { render :show, status: :created, location: store_index_path }

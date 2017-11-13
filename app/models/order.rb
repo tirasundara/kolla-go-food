@@ -38,7 +38,7 @@ class Order < ApplicationRecord
         disc = voucher.max_amount
       end
     else
-      disc = total_price * (voucher.amount/100.0)
+      disc = sub_total_price * (voucher.amount/100.0)
       if disc > voucher.max_amount
         disc = voucher.max_amount
       end
@@ -46,15 +46,16 @@ class Order < ApplicationRecord
     disc
   end
 
-  def total_price
+  def sub_total_price
     line_items.reduce(0) { |sum, n| sum + n.total_price }
   end
 
   def total_price_after_discount
-    tot_price = total_price - calculate_discount
+    tot_price = sub_total_price - calculate_discount
     if tot_price < 0.0
       return 0.00
     else
+      # self.total_price = tot_price
       return tot_price
     end
   end
