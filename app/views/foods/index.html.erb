@@ -1,7 +1,33 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Foods</h1>
+<h1>Foods Index</h1>
 
+<fieldset>
+  <legend>Search food?</legend>
+  <%= form_tag foods_path, :method => 'get' do %>
+    <div class="field">
+      <%= label_tag "Name:" %>
+      <%= text_field_tag :search_name, params[:search_name] %>
+    </div>
+    <div class="field">
+      <%= label_tag "Description:" %>
+      <%= text_area_tag :search_description, params[:search_description] %>
+    </div>
+    <div class="field">
+      <%= label_tag "Minimum price:" %>
+      <%= text_field_tag :search_min_price, params[:search_min_price] %>
+    </div>
+    <div class="field">
+      <%= label_tag "Maximum price:" %>
+      <%= text_field_tag :search_max_price, params[:search_max_price] %>
+    </div>
+    <div class="actions">
+      <%= submit_tag "Search", :name => nil %>
+    </div>
+  <% end %>
+</fieldset>
+
+<h3>Foods</h3>
 <table>
   <!--thead>
     <tr>

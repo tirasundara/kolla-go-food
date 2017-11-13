@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'dashboards/index'
+
   get 'admin/index', as: 'admin'
 
   root 'store#index', as: 'store_index'
@@ -10,6 +12,7 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
+
   resources :carts
   resources :buyers
   resources :foods
@@ -17,6 +20,20 @@ Rails.application.routes.draw do
   resources :categories
   resources :orders
   resources :users
+  resources :vouchers
+  resources :tags
+  resources :restaurants
+  # resources :reviews
+
+  # Polymorphic
+  resources :foods do
+    resources :reviews
+  end
+  resources :restaurants do
+    resources :reviews
+  end
+
+
 
   # get 'home/hello'
   # get 'home/goodbye'

@@ -10,9 +10,11 @@ describe OrdersController do
   end
 
   describe "GET #index" do
+
     it "populates an array of all orders" do
-      order1 = create(:order, name: "Buyer 1")
-      order2 = create(:order, name: "Buyer 2")
+      order1 = create(:order, name: "Buyer 1", voucher_id: 1, total_price: 2000.0)
+      order2 = create(:order, name: "Buyer 2", voucher_id: 1, total_price: 33000.0)
+
       get :index
       expect(assigns(:orders)).to match_array([order1, order2])
     end

@@ -6,6 +6,9 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "chartkick" %>
+    <%= javascript_include_tag "http://www.google.com/jsapi", "chartkick" %>
+
   </head>
 
   <body class="<%= controller.controller_name %>">
@@ -35,10 +38,12 @@
             <li><%= link_to 'Orders', orders_path %></li>
             <li><%= link_to 'Foods', foods_path %></li>
             <li><%= link_to 'Users', users_path %></li>
+            <li><%= link_to 'Vouchers', vouchers_path %></li>
+            <li><%= link_to 'Tags', tags_path %></li>
+            <li><%= link_to 'Restaurants', restaurants_path %></li>
             <li> </li>
             <li><%= button_to 'Logout', logout_path, method: :delete %></li>
           </ul>
-
         <% else %>
           <ul>
             <li><%= link_to 'Login', login_path %></li>

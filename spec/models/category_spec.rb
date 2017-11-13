@@ -26,7 +26,6 @@ RSpec.describe Category, type: :model do
   it "can't be destroyed while it has food(s)" do
     category = create(:category)
     food = create(:food, category: category)
-
     expect { category.destroy }.not_to change(Category, :count)
   end
 end

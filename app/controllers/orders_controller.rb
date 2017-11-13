@@ -3,10 +3,11 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: [:new, :create, :index]
   before_action :cart_not_empty, only: [:new]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :search_order_params, only: [:index]
   skip_before_action :authorize, only: [:new, :create]
 
   def index
-    @orders = Order.all
+    @orders = Order.search(search_order_params)
   end
 
   def show
@@ -25,6 +26,14 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     @order.add_line_items(@cart)
 
+    if params[:voucher_code]
+      voucher = Voucher.find_by(code: params["voucher_code"])
+      @order.voucher = voucher if !voucher.nil?
+      puts "HELLO..."
+    end
+
+    # @order.calculate_discount
+    @order.total_price = @order.total_price_after_discount
     respond_to do |format|
       if @order.save
         Cart.destroy(session[:cart_id])
@@ -67,11 +76,18 @@ class OrdersController < ApplicationController
       @order = Order.find(params[:id])
     end
     def order_params
-      params.require(:order).permit(:name, :email, :address, :payment_type)
+      params.require(:order).permit(:name, :email, :address, :voucher_id, :payment_type)
     end
+
     def cart_not_empty
       if @cart.line_items.empty?
         redirect_to store_index_path
       end
+    end
+
+    def search_order_params
+      hsh_search_params = Hash.new
+      hsh_search_params = { name: params[:search_name], address: params[:search_address], email: params[:search_email], payment_type: params[:search_payment_type], min_total_price: params[:search_min_total_price], max_total_price: params[:search_max_total_price] }
+      # puts "HELLO #{hsh_search_params}"
     end
 end

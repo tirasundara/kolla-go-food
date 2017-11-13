@@ -1,0 +1,49 @@
+<%= form_for(voucher) do |f| %>
+  <% if voucher.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(voucher.errors.count, "error") %>prohibited this voucher from being saved</h2>
+      <ul>
+        <% voucher.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <fieldset>
+    <legend>Enter Voucher Details</legend>
+
+    <div class="field">
+      <%= f.label :code %>
+      <%= f.text_field :code, size: 40 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :valid_from %>
+      <%= f.text_field :valid_from, size: 40 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :valid_through %>
+      <%= f.text_field :valid_through, size: 40 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :amount %>
+      <%= f.text_field :amount, size: 40 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :unit %>
+      <%= f.select :unit, Voucher.units.keys, prompt: "Select a unit" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :max_amount %>
+      <%= f.text_field :max_amount, size: 40 %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </fieldset>
+<% end %>

@@ -1,15 +1,29 @@
 <p id="notice"><%= notice %></p>
 <h1>Your Food Catalog</h1>
-<% @foods.each do |food| %>
+<% @restaurants.each do |restaurant| %>
+<div>
+  <h3><%= restaurant.name %> </h3>
+  <p>Total food(s): <%= restaurant.foods.count %></p>
+  <p><%= link_to 'Add restaurant review', new_restaurant_review_path(restaurant_id: restaurant) %></p>
+  <% restaurant.foods.each do |food| %>
   <div class="entry">
     <%= image_tag(food.image_url) %>
     <h3><%= link_to food.name, food %></h3>
     <p><%= sanitize(food.description) %></p>     <!-- preventing from XSS -->
-    <div class="price_line">
-      <span class="price">
-        <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
-        <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
-      </span>
-    </div>
+    <p>Tag(s):
+      <% food.tags.each do |tag| %>
+        <%= tag.name %>
+    <% end %>
+    </p>
+
+  <div class="price_line">
+    <span class="price">
+      <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
+      <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
+      <%= link_to 'Add food review', new_food_review_path(food_id: food) %>
+    </span>
   </div>
+  </div>
+  <% end %>
+</div>
 <% end %>
