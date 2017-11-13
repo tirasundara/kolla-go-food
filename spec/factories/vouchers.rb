@@ -5,9 +5,9 @@ FactoryGirl.define do
     code "HEMAT10K"
     valid_from "2017-11-01 13:24:16"
     valid_through "2017-12-31 23:59:59"
-    amount "10000"
+    amount "10000.00"
     unit 1
-    max_amount "10000"
+    max_amount "10000.00"
   end
 
   factory :invalid_voucher, parent: :voucher do

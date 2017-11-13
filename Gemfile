@@ -39,6 +39,9 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
+# ChartKick
+gem "chartkick"
+gem 'groupdate'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -2,8 +2,13 @@
 
 FactoryGirl.define do
   factory :restaurant do
-    name "RM Raja Roso"
-    address "Jl. In aja"
+    sequence :name do |n|
+      "Restaurant #{n}"
+    end
+    sequence :address do |x|
+      "Jl. In aja #{x}"
+    end
+
   end
   factory :invalid_restaurant, parent: :restaurant do
     name nil

@@ -1,0 +1,12 @@
+<h1>Dashboards#index</h1>
+<h3>Orders Chart</h3>
+<%= line_chart @orders.group_by_day(:created_at).count %>
+<h3>Total Price Chart</h3>
+<%= line_chart @orders.group_by_day(:created_at).sum(:total_price) %>
+<h3>Food's Order Chart</h3>
+<%= line_chart @orders.joins(line_items: :food).group("foods.name").count %>
+<h3>Food's Total Price Chart</h3>
+<%= line_chart @orders.joins(line_items: :food).group("foods.name").sum(:total_price) %>
+<h3>Restaurant's Orders Number</h3>
+
+<h3>Restaurant's Orders Price</h3>

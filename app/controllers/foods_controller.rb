@@ -5,9 +5,10 @@ class FoodsController < ApplicationController
   # GET /foods
   # GET /foods.json
   def index
+    @foods = Food.search((@hsh_search_params))
     # @foods = Food.all
     # @foods = Food.by_letter(params[:letter])
-    @foods = params[:letter].nil? ? Food.search(@hsh_search_params) : Food.by_letter(params[:letter]).search(params[:search_name])
+    #@foods = params[:letter].nil? ? Food.search(@hsh_search_params) : Food.by_letter(params[:letter]).search(params[:search_name])
     # if params[:letter].nil?
     #   @foods = Food.all
     # elsif

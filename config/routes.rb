@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'dashboards/index'
+
   get 'admin/index', as: 'admin'
 
   root 'store#index', as: 'store_index'

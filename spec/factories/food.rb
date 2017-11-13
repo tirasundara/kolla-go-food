@@ -1,8 +1,9 @@
 FactoryGirl.define do
   factory :food do
     association :category
-    association :tag
+    # association :tag
     association :restaurant
+    # tag_ids {[]}
     sequence :name do |n|
       "food#{n}"
     end
