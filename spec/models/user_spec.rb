@@ -64,4 +64,28 @@ RSpec.describe User, type: :model do
       expect(@user.errors[:password_confirmation]).to include("doesn't match Password")
     end
   end
+
+  describe "TopUp" do
+    before :each do
+      @user = create(:user, credit: 200000.00)
+    end
+
+    context "with valid attributes" do
+      it "is valid with an amount" do
+        expect(build(:user)).to be_valid
+      end
+
+      it "is valid with amount greater than 0"
+
+      it "will add the credit after topup"
+    end
+
+    context "with invalid attributes" do
+      it "is invalid with empty amount" do
+
+      end
+
+      it "is invalid with non-numeric amount"
+    end
+  end
 end

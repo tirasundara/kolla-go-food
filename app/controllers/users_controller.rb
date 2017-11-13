@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-before_action :set_user, only: [:show, :edit, :update, :destroy]
+before_action :set_user, only: [:show, :edit, :update, :destroy, :topup, :set_topup]
 
   # GET /users
   # GET /users.json
@@ -54,6 +54,23 @@ before_action :set_user, only: [:show, :edit, :update, :destroy]
       format.json { head :no_content }
     end
   end
+
+  def topup
+  end
+
+  def set_topup
+    @user.topup(params[:amount])
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to topup_user_path, notice: 'Top up success.' }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :topup }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
 
   private
     def set_user

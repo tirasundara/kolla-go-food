@@ -33,7 +33,8 @@ Rails.application.routes.draw do
     resources :reviews
   end
 
-
+  get '/users/:id/topup' => 'users#topup', as: 'topup_user'
+  patch '/users/:id/topup' => 'users#set_topup'
 
   # get 'home/hello'
   # get 'home/goodbye'

@@ -54,6 +54,11 @@ RSpec.describe UsersController, type: :controller do
       session[:user_id] = user.id
     end
 
+    it "assigns 200000 credit to new users" do
+      user = create(:user)
+      expect(user.credit).to eq 200000.00
+    end
+
     it "saves the new user in the database" do
       role1 = create(:role)
       role2 = create(:role)
@@ -121,5 +126,12 @@ RSpec.describe UsersController, type: :controller do
       delete :destroy, params: { id: @user }
       expect(response).to redirect_to users_path
     end
+  end
+
+  it "is a test" do
+    user = create(:user)
+    patch :update, params: { id: user, user: attributes_for(:user, credit: 100000.0) }
+    user.reload
+    expect(@user.credit.to_f).to eq(100000)
   end
 end
