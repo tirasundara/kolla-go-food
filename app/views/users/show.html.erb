@@ -4,6 +4,10 @@
   <strong>Username:</strong>
   <%= @user.username %>
 </p>
+<p>
+  <strong>Go Pay Balance:</strong>
+  <%= @user.credit %>
+</p>
 
 <%= link_to 'Edit', edit_user_path(@user) %>
 <%= link_to 'Back', users_path %>

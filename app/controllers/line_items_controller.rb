@@ -9,6 +9,11 @@ class LineItemsController < ApplicationController
     food = Food.find(params[:food_id])
     @line_item = @cart.add_food(food)
 
+    if session[:restaurant_id].nil?
+      session[:restaurant_id] = food.restaurant_id
+      redirect_to store_index_path
+    end
+
     respond_to do |format|
       if @line_item.save
         format.html { redirect_to store_index_path, notice: 'Line item was successfully created' }
