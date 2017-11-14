@@ -1,0 +1,33 @@
+<%= form_for(topup_user_path, method: :patch) do |f| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %>prohibited this user from being saved</h2>
+      <ul>
+        <% user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <fieldset>
+    <legend>Enter User Details</legend>
+    <div class="field">
+      <%= f.label :username %>
+      <%= @user.username %>
+    </div>
+
+    <div class="field">
+      <%= f.label :credit %>
+      <%= @user.credit %>
+    </div>
+
+    <div class="field">
+      <%= f.label :amount %>
+      <%= f.text_field :amount, value: nil %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit 'Top Up'%>
+    </div>
+  </fieldset>
+<% end %>

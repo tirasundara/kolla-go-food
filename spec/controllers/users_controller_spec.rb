@@ -128,10 +128,35 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  it "is a test" do
-    user = create(:user)
-    patch :update, params: { id: user, user: attributes_for(:user, credit: 100000.0) }
-    user.reload
-    expect(@user.credit.to_f).to eq(100000)
+  describe "top up amount" do
+    before :each do
+      @user = create(:user)
+    end
+
+    context "with valid amount" do
+      it "will add the value of credit with amount" do
+        patch :set_topup, params: { id: @user, amount: 1.0 }
+        @user.reload
+        expect(@user.credit.to_f).to eq(200001.0)
+      end
+
+      it "redirects to top up page" do
+        patch :set_topup, params: { id: @user }
+        expect(response).to redirect_to topup_user_path
+      end
+    end
+
+    context "with invalid amount" do
+      it "will not add the value of credit" do
+        patch :set_topup, params: { id: @user, amount: "1a" }
+        @user.reload
+        expect(@user.credit.to_f).to eq(200000.0)
+      end
+
+      it "redirects to top up page" do
+        patch :set_topup, params: { id: @user }
+        expect(response).to redirect_to topup_user_path
+      end
+    end
   end
 end

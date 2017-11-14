@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
 before_action :set_user, only: [:show, :edit, :update, :destroy, :topup, :set_topup]
+# before_action :validate_amount, only: :set_topup
 
   # GET /users
   # GET /users.json
@@ -59,13 +60,13 @@ before_action :set_user, only: [:show, :edit, :update, :destroy, :topup, :set_to
   end
 
   def set_topup
-    @user.topup(params[:amount])
+    res = @user.topup(params[:amount])
     respond_to do |format|
-      if @user.save
+      if @user.save && res
         format.html { redirect_to topup_user_path, notice: 'Top up success.' }
         format.json { render :show, status: :created, location: @user }
       else
-        format.html { render :topup }
+        format.html { redirect_to topup_user_path, notice: 'Top up failed: amount is invalid' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
@@ -78,6 +79,10 @@ before_action :set_user, only: [:show, :edit, :update, :destroy, :topup, :set_to
     end
 
     def user_params
-      params.require(:user).permit(:username, :password, :password_confirmation, role_ids: [])
+      params.require(:user).permit(:username, :password, :credit, :password_confirmation, role_ids: [])
     end
+
+    # def validate_amount
+    #   @user.ensure_amount_is_valid(params[:amount])
+    # end
 end

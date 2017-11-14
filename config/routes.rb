@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   resources :line_items
   resources :categories
   resources :orders
-  resources :users
+  # resources :users
   resources :vouchers
   resources :tags
   resources :restaurants
@@ -33,8 +33,15 @@ Rails.application.routes.draw do
     resources :reviews
   end
 
-  get '/users/:id/topup' => 'users#topup', as: 'topup_user'
-  patch '/users/:id/topup' => 'users#set_topup'
+  resources :users do
+    member do
+      get 'topup'
+      patch 'topup' => 'users#set_topup'
+    end
+    # get '/:id/topup' => 'users#topup', as: 'topup_user'
+    # patch '/:id/topup' => 'users#set_topup', as: 'set_topup_user'
+  end
+
 
   # get 'home/hello'
   # get 'home/goodbye'
