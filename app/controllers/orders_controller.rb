@@ -16,6 +16,7 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
+    @user = User.find(session[:user_id])
   end
 
   def edit
@@ -26,6 +27,17 @@ class OrdersController < ApplicationController
     @order = Order.new(order_params)
     @order.add_line_items(@cart)
     @order.user_id = session[:user_id]
+    @user = User.find(session[:user_id])
+
+    valid_order = true
+
+    if @order.payment_type == 'Go Pay'
+      if @user.ensure_credit_is_sufficient(session[:user_id], @order.total_price_after_discount)
+        valid_order = true
+      else
+        valid_order = false
+      end
+    end
 
     if params[:voucher_code]
       voucher = Voucher.find_by(code: params["voucher_code"])
@@ -36,12 +48,12 @@ class OrdersController < ApplicationController
     # @order.calculate_discount
     @order.total_price = @order.total_price_after_discount
     respond_to do |format|
-      if @order.save
+      if @order.save && valid_order
         Cart.destroy(session[:cart_id])
         # @cart.destroy
         session[:cart_id] = nil
 
-        OrderMailer.received(@order).deliver
+        # OrderMailer.received(@order).deliver
 
         format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
         format.json { render :show, status: :created, location: store_index_path }

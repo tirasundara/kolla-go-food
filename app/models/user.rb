@@ -28,4 +28,14 @@ class User < ApplicationRecord
   def is_number? amount
     true if Float(amount) rescue false
   end
+
+  def ensure_credit_is_sufficient(user_id, total_price)
+    user = User.find(user_id)
+    if user.credit >= total_price
+      true
+    else
+      errors.add(:credit, "is not sufficient")
+      false
+    end
+  end
 end

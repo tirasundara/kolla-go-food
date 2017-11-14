@@ -168,8 +168,16 @@ describe OrdersController do
     end
   end
 
+
   it "assigns session[:user_id] to order.user_id" do
     post :create, params: { order: attributes_for(:order) }
     expect(assigns(:order).user_id).to eq(session[:user_id])
+  end
+
+  context "with gopay as payment_type" do
+    it "returns true if user's credit is sufficient" do
+      post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay') }
+      expect(assigns(:order).ensure_credit_is_sufficient(session[:user_id])).to eq(true)
+    end
   end
 end

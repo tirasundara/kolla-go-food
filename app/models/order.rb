@@ -61,6 +61,7 @@ class Order < ApplicationRecord
   end
 
   private
+  
     def validate_voucher_date
       if !voucher.nil?
         now = Time.now
