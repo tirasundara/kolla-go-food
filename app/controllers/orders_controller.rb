@@ -25,6 +25,7 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     @order.add_line_items(@cart)
+    @order.user_id = session[:user_id]
 
     if params[:voucher_code]
       voucher = Voucher.find_by(code: params["voucher_code"])

@@ -167,4 +167,9 @@ describe OrdersController do
       expect(response).to redirect_to orders_path
     end
   end
+
+  it "assigns session[:user_id] to order.user_id" do
+    post :create, params: { order: attributes_for(:order) }
+    expect(assigns(:order).user_id).to eq(session[:user_id])
+  end
 end

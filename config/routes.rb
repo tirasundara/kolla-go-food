@@ -12,7 +12,6 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
-
   resources :carts
   resources :buyers
   resources :foods
@@ -38,10 +37,7 @@ Rails.application.routes.draw do
       get 'topup'
       patch 'topup' => 'users#set_topup'
     end
-    # get '/:id/topup' => 'users#topup', as: 'topup_user'
-    # patch '/:id/topup' => 'users#set_topup', as: 'set_topup_user'
   end
-
 
   # get 'home/hello'
   # get 'home/goodbye'
