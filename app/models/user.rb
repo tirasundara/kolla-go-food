@@ -11,7 +11,6 @@ class User < ApplicationRecord
   def topup(amount)
     if ensure_amount_is_valid(amount)
       self.credit += amount.to_f
-      self.credit.to_f
     else
       return false
     end
@@ -37,5 +36,9 @@ class User < ApplicationRecord
       errors.add(:credit, "is not sufficient")
       false
     end
+  end
+
+  def use_credit(total_price)
+    self.credit -= total_price
   end
 end

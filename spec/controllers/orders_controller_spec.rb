@@ -180,16 +180,27 @@ describe OrdersController do
       expect(assigns(:user).ensure_credit_is_sufficient(session[:user_id], assigns(:order).total_price)).to eq(true)
     end
 
-    it "does not save order with insufficient credit" do
-      cart = create(:cart)
-      food1 = create(:food, price: 100000.00)
-      food2 = create(:food, price: 121000.00)
-      line_item1 = create(:line_item, cart: cart, food: food1, quantity: 2)
-      line_item2 = create(:line_item, cart: cart, food: food2, quantity: 2)
-      # order = build
-      expect {
-        post :create, params: { order: attributes_for(:order, line_items: [line_item1, line_item2], payment_type: 'Go Pay') }
-      }.not_to change(Order, :count)
+    # it "does not save order with insufficient credit" do
+    #   user2 = create(:user, credit: 200000)
+    #   cart = create(:cart)
+    #   food = create(:food, price: 300000.00)
+    #   line_item = create(:line_item, cart: cart, food: food)
+    #   expect {
+    #     post :create, params: { order: attributes_for(:order, user_id: user2.id, line_items: [line_item], payment_type: 'Go Pay') }
+    #   }.not_to change(Order, :count)
+    # end
+
+    it "returns remain credit after order" do
+      post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay') }
+      expect(assigns(:user).use_credit(20000)).to eq(180000.0)
     end
+
+    # it "substract the gopay credit with order total_price" do
+    #   cart = create(:cart)
+    #   food = create(:food, price: 20000.00)
+    #   line_item = create(:line_item, cart: cart, food: food)
+    #   post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay', line_items: [line_item])}
+    #   expect(assigns(:user).credit).to eq(180000.00)
+    # end
   end
 end

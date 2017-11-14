@@ -29,11 +29,13 @@ class OrdersController < ApplicationController
     @order.user_id = session[:user_id]
     @user = User.find(session[:user_id])
 
-    valid_order = true
+    @order.total_price = @order.total_price_after_discount
 
+    valid_order = true
     if @order.payment_type == 'Go Pay'
       if @user.ensure_credit_is_sufficient(session[:user_id], @order.total_price_after_discount)
         valid_order = true
+        @user.use_credit(@order.total_price)
       else
         valid_order = false
       end
@@ -45,11 +47,9 @@ class OrdersController < ApplicationController
       puts "HELLO..."
     end
 
-    # @order.calculate_discount
-    @order.total_price = @order.total_price_after_discount
     respond_to do |format|
       if valid_order
-        if @order.save
+        if @order.save && @user.save
           Cart.destroy(session[:cart_id])
           # @cart.destroy
           session[:cart_id] = nil
