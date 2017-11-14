@@ -177,7 +177,19 @@ describe OrdersController do
   context "with gopay as payment_type" do
     it "returns true if user's credit is sufficient" do
       post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay') }
-      expect(assigns(:order).ensure_credit_is_sufficient(session[:user_id])).to eq(true)
+      expect(assigns(:user).ensure_credit_is_sufficient(session[:user_id], assigns(:order).total_price)).to eq(true)
+    end
+
+    it "does not save order with insufficient credit" do
+      cart = create(:cart)
+      food1 = create(:food, price: 100000.00)
+      food2 = create(:food, price: 121000.00)
+      line_item1 = create(:line_item, cart: cart, food: food1, quantity: 2)
+      line_item2 = create(:line_item, cart: cart, food: food2, quantity: 2)
+      # order = build
+      expect {
+        post :create, params: { order: attributes_for(:order, line_items: [line_item1, line_item2], payment_type: 'Go Pay') }
+      }.not_to change(Order, :count)
     end
   end
 end

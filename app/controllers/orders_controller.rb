@@ -48,15 +48,20 @@ class OrdersController < ApplicationController
     # @order.calculate_discount
     @order.total_price = @order.total_price_after_discount
     respond_to do |format|
-      if @order.save && valid_order
-        Cart.destroy(session[:cart_id])
-        # @cart.destroy
-        session[:cart_id] = nil
+      if valid_order
+        if @order.save
+          Cart.destroy(session[:cart_id])
+          # @cart.destroy
+          session[:cart_id] = nil
 
-        # OrderMailer.received(@order).deliver
+          # OrderMailer.received(@order).deliver
 
-        format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
-        format.json { render :show, status: :created, location: store_index_path }
+          format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
+          format.json { render :show, status: :created, location: store_index_path }
+        else
+          format.html { render :new }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }
