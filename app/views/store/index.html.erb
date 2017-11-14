@@ -20,7 +20,7 @@
     <span class="price">
       <%= number_to_currency(food.price, unit: "Rp. ", delimiter: ".", separator: ",") %>
       <% if session[:restaurant_id] == food.restaurant_id || session[:restaurant_id].nil? %>
-      <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
+        <%= button_to 'Add to cart', line_items_path(food_id: food), remote: true %>
       <% end %>
       <%= link_to 'Add food review', new_food_review_path(food_id: food) %>
     </span>

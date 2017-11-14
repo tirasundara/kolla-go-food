@@ -3,7 +3,11 @@ require 'rails_helper'
 describe LineItemsController do
   describe 'POST #create' do
     before :each do
-      @food = create(:food)
+      @restaurant = create(:restaurant, id: 1)
+      @restaurant2 = create(:restaurant, id: 2)
+      @food2 = create(:food, restaurant_id: @restaurant2.id)
+      @food = create(:food, restaurant_id: @restaurant.id)
+      session[:restaurant_id] = @food.restaurant_id
     end
     context "with existing line_item with the same food" do
       before :each do
@@ -67,6 +71,13 @@ describe LineItemsController do
     it "redirects to store#index" do
       post :create, params: { food_id: @food.id }
       expect(response).to redirect_to store_index_path #(stores(assigns(:line_item).cart))
+    end
+
+
+    it "does not save the new line_item with different restaurant" do
+      expect{
+        post :create, params: { food_id: @food2.id }
+      }.not_to change(LineItem, :count)
     end
   end
 end

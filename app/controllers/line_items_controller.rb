@@ -11,19 +11,23 @@ class LineItemsController < ApplicationController
 
     if session[:restaurant_id].nil?
       session[:restaurant_id] = food.restaurant_id
-      redirect_to store_index_path
+      redirect_to store_index_path, notice: 'Now you can only add food from same restaurant'
     end
 
-    respond_to do |format|
-      if @line_item.save
-        format.html { redirect_to store_index_path, notice: 'Line item was successfully created' }
-        # untuk AJAX
-        format.js { @current_item = @line_item }
-        format.json { render :show, status: :created, location: @line_item }
-      else
-        format.html { render :new }
-        format.json { render json: @line_item.errors, status: :unprocessable_entity }
+    if food.restaurant_id == session[:restaurant_id] || session[:restaurant_id].nil?
+      respond_to do |format|
+        if @line_item.save
+          format.html { redirect_to store_index_path, notice: 'Line item was successfully created' }
+          # untuk AJAX
+          format.js { @current_item = @line_item }
+          format.json { render :show, status: :created, location: @line_item }
+        else
+          format.html { render :new }
+          format.json { render json: @line_item.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to store_index_path
     end
   end
 end

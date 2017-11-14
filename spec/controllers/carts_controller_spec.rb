@@ -145,6 +145,7 @@ describe CartsController do
     before :each do
       @cart = create(:cart)
       session[:cart_id] = @cart.id
+      session[:restaurant_id] = 1
     end
 
     context "with valid cart id" do
@@ -157,6 +158,11 @@ describe CartsController do
       it "removes the cart from user's session" do
         delete :destroy, params: { id: @cart.id }
         expect(session[:id]).to eq(nil)
+      end
+
+      it "removes restaurant_id from user's session" do
+        delete :destroy, params: { id: @cart.id }
+        expect(session[:restaurant_id]).to eq(nil)
       end
 
       it "redirects to the store home page" do
