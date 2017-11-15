@@ -51,11 +51,14 @@ class OrdersController < ApplicationController
 
     valid_order = true
     if @order.payment_type == 'Go Pay'
-      if @user.ensure_credit_is_sufficient(session[:user_id], @order.total_price_after_discount)
-        valid_order = true
-        @user.use_credit(@order.total_price)
-      else
-        valid_order = false
+      begin
+        if @user.ensure_credit_is_sufficient(session[:user_id], @order.total_price_after_discount)
+          valid_order = true
+          @user.use_credit(@order.total_price)
+        else
+          valid_order = false
+        end
+      rescue
       end
     end
 

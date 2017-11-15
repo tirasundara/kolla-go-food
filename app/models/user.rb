@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :username, presence: true, uniqueness: true
   validates :password, presence: true, on: :create  # khusus saat :create
   validates :password, length: { minimum: 8 }, allow_blank: true
-  validates :credit, presence: true
+  validates :credit, presence: true, numericality: { greater_than_or_equal_to: 0.01 }
 
   def topup(amount)
     if ensure_amount_is_valid(amount)
