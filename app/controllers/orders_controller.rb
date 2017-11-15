@@ -24,12 +24,20 @@ class OrdersController < ApplicationController
   end
 
   def create
+    @restaurant = Restaurant.find(session[:restaurant_id])
+
     @order = Order.new(order_params)
+    # @order.invalid?
+    @order.origin = @restaurant.address
+
     @order.add_line_items(@cart)
     @order.user_id = session[:user_id]
     @user = User.find(session[:user_id])
 
-    @order.total_price = @order.total_price_after_discount
+    begin
+      @order.total_price = @order.total_price_after_discount
+    rescue
+    end
 
     valid_order = true
     if @order.payment_type == 'Go Pay'
@@ -53,6 +61,7 @@ class OrdersController < ApplicationController
           Cart.destroy(session[:cart_id])
           # @cart.destroy
           session[:cart_id] = nil
+          session[:restaurant_id] = nil
 
           # OrderMailer.received(@order).deliver
 

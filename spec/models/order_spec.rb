@@ -17,7 +17,7 @@ describe Order do
   end
 
   it "is invalid without an address" do
-    order = build(:order, address: nil)
+    order = build(:order, address: "")
     order.valid?
     expect(order.errors[:address]).to include("can't be blank")
   end
@@ -100,7 +100,7 @@ describe Order do
 
     context "when total_price_after_discount <= 0" do
       it "can calculate total price after discount" do
-        order = create(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
+        order = build(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
         expect(order.total_price_after_discount).to eq(0.00)
       end
     end
@@ -113,4 +113,39 @@ describe Order do
     # it "returns nil if voucher can't be used yet"
   end
 
+  describe "Google maps API" do
+    before :each do
+      @origin = "Sarinah"
+      @destination = "Monas"
+      @price_per_km = 1500.0
+      @distance = Order.get_distance(@origin, @destination)
+    end
+
+    context "with valid address" do
+      it "returns distance in km" do
+        expect(Order.get_distance(@origin, @destination)).to eq(4.6)
+      end
+
+      it "can calculate delivery cost" do
+        order = build(:order)
+        expect(order.delivery_cost(@price_per_km, @distance)).to eq(6900)
+      end
+
+      it "can calculate sum of total_price and delivery_cost" do
+        cart = create(:cart)
+        food = create(:food, price: 20000.00)
+        line_item = create(:line_item, cart: cart, food: food)
+        order = build(:order, line_items: [line_item])
+        delivery_cost = order.delivery_cost(@price_per_km, @distance)
+
+        expect(order.final_price(@price_per_km, @distance)).to eq(26900.0)
+      end
+    end
+
+    it "is invalid with unknown address" do
+      order = build(:order, address: "xyz")
+      order.valid?
+      expect(order.errors[:address]).to include("is invalid")
+    end
+  end
 end

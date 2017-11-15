@@ -3,7 +3,9 @@ require 'rails_helper'
 describe OrdersController do
   before :each do
     user = create(:user)
+    restaurant = create(:restaurant, id: 1, address: 'Monas')
     session[:user_id] = user.id
+    session[:restaurant_id] = restaurant.id
   end
   it "includes CurrentCart" do
     expect(OrdersController.ancestors.include? CurrentCart).to eq(true)
@@ -202,5 +204,13 @@ describe OrdersController do
     #   post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay', line_items: [line_item])}
     #   expect(assigns(:user).credit).to eq(180000.00)
     # end
+  end
+
+  context "with valid buyer address" do
+    it "assigns restaurant addres from session[:restaurant_id]" do
+      post :create, params: { order: attributes_for(:order) }
+      expect(assigns(:restaurant).address).to eq('Monas')
+    end
+
   end
 end

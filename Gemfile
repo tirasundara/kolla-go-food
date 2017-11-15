@@ -40,8 +40,11 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 
 # ChartKick
-gem "chartkick"
+gem 'chartkick'
 gem 'groupdate'
+
+# Google maps service
+gem 'google_maps_service'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
