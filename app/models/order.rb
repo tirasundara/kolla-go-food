@@ -35,18 +35,14 @@ class Order < ApplicationRecord
 
   def calculate_discount
     disc = 0.00
-    return disc if voucher == nil
-    return disc if voucher.not_expired? == false
-    if voucher.unit == "IDR"
-      if voucher.amount <= voucher.max_amount
+    if !voucher.nil? && voucher.not_expired?
+      if voucher.unit == "IDR"
         disc = voucher.amount
-      elsif
-        disc = voucher.max_amount
-      end
-    else
-      disc = sub_total_price * (voucher.amount/100.0)
-      if disc > voucher.max_amount
-        disc = voucher.max_amount
+      else  # unit = "percent"
+        disc = sub_total_price * (voucher.amount/100.0)
+        if disc > voucher.max_amount
+          disc = voucher.max_amount
+        end
       end
     end
     disc

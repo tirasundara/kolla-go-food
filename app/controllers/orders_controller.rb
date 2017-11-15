@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
 
   def index
     @orders = Order.search(search_order_params)
+    #@orders = Order.all
   end
 
   def show
@@ -17,6 +18,7 @@ class OrdersController < ApplicationController
   def new
     @order = Order.new
     @user = User.find(session[:user_id])
+    # @voucher = Voucher.find_by(code: params["voucher_code"])
   end
 
   def edit
@@ -34,6 +36,14 @@ class OrdersController < ApplicationController
     @order.user_id = session[:user_id]
     @user = User.find(session[:user_id])
 
+    if params["voucher_code"] != ""
+      @order.voucher = Voucher.find_by(code: params["voucher_code"])
+      if @order.voucher.nil?
+        redirect_to new_order_path, notice: 'Voucher not found.'
+        return
+      end
+    end
+
     begin
       @order.total_price = @order.total_price_after_discount
     rescue
@@ -47,12 +57,6 @@ class OrdersController < ApplicationController
       else
         valid_order = false
       end
-    end
-
-    if params[:voucher_code]
-      voucher = Voucher.find_by(code: params["voucher_code"])
-      @order.voucher = voucher if !voucher.nil?
-      puts "HELLO..."
     end
 
     respond_to do |format|

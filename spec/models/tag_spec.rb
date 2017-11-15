@@ -19,5 +19,9 @@ RSpec.describe Tag, type: :model do
     tag2.valid?
     expect(tag2.errors[:name]).to include("has already been taken")
   end
-  it "can't be destroyed while it has food(s)"
+  it "can't be destroyed while it has food(s)" do
+    tag = create(:tag)
+    food = create(:food, tags: [tag])
+    expect { tag.destroy }.not_to change(Tag, :count)
+  end
 end
