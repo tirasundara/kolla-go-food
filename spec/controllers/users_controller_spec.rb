@@ -68,6 +68,15 @@ RSpec.describe UsersController, type: :controller do
       }.to change(User, :count).by(1)
     end
 
+    it "will assign customer as default role when role is empty" do
+      role1 = create(:role)
+      role2 = create(:role)
+      user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
+      expect {
+        post :create, params: { user: attributes_for(:user, role_ids: []) }
+      }.to change(UserRole, :count).by(1)
+    end
+
     it "is redirects to user#show" do
       post :create, params: { user: attributes_for(:user) }
       expect(response).to redirect_to(user_path(assigns[:user]))

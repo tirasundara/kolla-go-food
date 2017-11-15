@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  after_create :assign_default_role
+  after_update :assign_default_role
+
   has_secure_password
   has_many :user_roles
   has_many :roles, through: :user_roles
@@ -42,4 +45,12 @@ class User < ApplicationRecord
     self.credit -= total_price
     self.credit.to_f
   end
+  private
+
+    def assign_default_role
+      if self.role_ids.empty?
+        user_role = UserRole.new(user_id: self.id, role_id: 2)
+        user_role.save
+      end
+    end
 end
