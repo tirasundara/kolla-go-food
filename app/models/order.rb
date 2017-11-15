@@ -70,8 +70,8 @@ class Order < ApplicationRecord
   def get_distance
     gmaps = GoogleMapsService::Client.new(key: 'AIzaSyBtGoQM9mdzHQiyjcxpxfJmSfjK0rUbGEI')
     distance_matrix = gmaps.distance_matrix(origin, address)
-    distance = distance_matrix[:rows][0][:elements][0][:distance][:text]
-    distance.to_f
+    distance = distance_matrix[:rows][0][:elements][0][:distance][:value] / 1000.0
+    distance.to_f.round(2)
   end
 
   def delivery_cost

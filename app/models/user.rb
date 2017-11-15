@@ -40,5 +40,6 @@ class User < ApplicationRecord
 
   def use_credit(total_price)
     self.credit -= total_price
+    self.credit.to_f
   end
 end

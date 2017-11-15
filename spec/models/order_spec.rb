@@ -101,6 +101,8 @@ describe Order do
     context "when total_price_after_discount <= 0" do
       it "can calculate total price after discount" do
         order = build(:order, line_items: [@line_item1, @line_item2],  voucher: @voucher1)
+        order.address = "Wisma NAELAH"
+        order.origin = "Monas"
         expect(order.total_price_after_discount).to eq(0.00)
       end
     end
@@ -115,20 +117,19 @@ describe Order do
 
   describe "Google maps API" do
     before :each do
-      @origin = "Sarinah"
-      @destination = "Monas"
+      @order = build(:order)
+      @order.origin = "Monas"
+      @order.address = "Sarinah"
       @price_per_km = 1500.0
-      @distance = Order.get_distance(@origin, @destination)
     end
 
     context "with valid address" do
       it "returns distance in km" do
-        expect(Order.get_distance(@origin, @destination)).to eq(4.6)
+        expect(@order.get_distance).to eq(1.5)
       end
 
       it "can calculate delivery cost" do
-        order = build(:order)
-        expect(order.delivery_cost(@price_per_km, @distance)).to eq(6900)
+        expect(@order.delivery_cost).to eq(2250.0)
       end
 
       it "can calculate sum of total_price and delivery_cost" do
@@ -136,9 +137,9 @@ describe Order do
         food = create(:food, price: 20000.00)
         line_item = create(:line_item, cart: cart, food: food)
         order = build(:order, line_items: [line_item])
-        delivery_cost = order.delivery_cost(@price_per_km, @distance)
-
-        expect(order.final_price(@price_per_km, @distance)).to eq(26900.0)
+        order.origin = "Monas"
+        order.address = "Sarinah"
+        expect(order.total_price_after_discount).to eq(22250.0)
       end
     end
 

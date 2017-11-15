@@ -193,7 +193,7 @@ describe OrdersController do
     # end
 
     it "returns remain credit after order" do
-      post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay') }
+      post :create, params: { order: attributes_for(:order, payment_type: 'Go Pay', address: 'Monas') }
       expect(assigns(:user).use_credit(20000)).to eq(180000.0)
     end
 
