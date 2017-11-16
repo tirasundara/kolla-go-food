@@ -13,6 +13,10 @@ before_action :set_user, only: [:show, :edit, :update, :destroy, :topup, :set_to
   def show
   end
 
+  def order_history
+    @orders = Order.where("user_id = ?", session[:user_id]).order(id: :desc)
+  end
+
   def edit
   end
 

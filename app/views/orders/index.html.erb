@@ -42,6 +42,7 @@
     <td>Address</td>
     <td>Email</td>
     <td>Payment type</td>
+    <td>Distance (km)</td>
     <td>Total Price</td>
     <td>Actions</td>
   </tr>
@@ -52,6 +53,7 @@
       <td><%= order.address %></td>
       <td><%= order.email %></td>
       <td><%= order.payment_type %></td>
+      <td><%= order.distance %></td>
       <td><%= number_to_currency(order.total_price, unit: "Rp. ", delimiter: ".", separator: ",")  %></td>
 
       <td>

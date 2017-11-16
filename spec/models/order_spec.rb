@@ -128,8 +128,16 @@ describe Order do
         expect(@order.get_distance).to eq(1.5)
       end
 
-      it "can calculate delivery cost" do
-        expect(@order.delivery_cost).to eq(2250.0)
+      context "calculate delivery cost" do
+        it "can calculate delivery cost" do
+          expect(@order.delivery_cost).to eq(2250.0)
+        end
+        it "returns 1500.0 if distance < 1km" do
+          order = build(:order)
+          order.origin = "Plaza Indonesia"
+          order.address = "Wisma NAELAH"
+          expect(order.delivery_cost).to eq(1500.0)
+        end
       end
 
       it "can calculate sum of total_price and delivery_cost" do

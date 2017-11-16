@@ -67,12 +67,14 @@ class Order < ApplicationRecord
     gmaps = GoogleMapsService::Client.new(key: 'AIzaSyBtGoQM9mdzHQiyjcxpxfJmSfjK0rUbGEI')
     distance_matrix = gmaps.distance_matrix(origin, address)
     distance = distance_matrix[:rows][0][:elements][0][:distance][:value] / 1000.0
+    self.distance = distance.to_f.round(2)
     distance.to_f.round(2)
   end
 
   def delivery_cost
     delivery_cost = 0
     delivery_cost = PRICE_PER_KM * get_distance
+    delivery_cost = PRICE_PER_KM if get_distance < 1.0
     delivery_cost.ceil
   end
 

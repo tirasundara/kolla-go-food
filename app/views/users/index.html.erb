@@ -1,18 +1,24 @@
-<h1>Users</h1>
-<table>
-  <% @users.each do |user| %>
-    <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
-      <td><%= user.username %></td>
-      <td><%= user.roles.map {|h| h["name"]} %></td>
-      <td><%= user.credit %></td>
-      <td>
-        <%= link_to 'Show', user %>
-        <%= link_to 'Edit', edit_user_path(user) %>
-        <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
-        <%= link_to 'Top Up', topup_user_path(user) %>
-      </td>
-    </tr>
+<% if session[:user_id] %>
+  <% if session[:user_roles].map { |h| h["name"] }.include?("administrator") %>
+    <h1>Users</h1>
+    <table>
+      <% @users.each do |user| %>
+        <tr class="<%= cycle('list_line_odd', 'list_line_even') %>">
+          <td><%= user.username %></td>
+          <td><%= user.roles.map {|h| h["name"]} %></td>
+          <td><%= user.credit %></td>
+          <td>
+            <%= link_to 'Show', user %>
+            <%= link_to 'Edit', edit_user_path(user) %>
+            <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'Top Up', topup_user_path(user) %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+    <br />
+    <%= link_to 'New user', new_user_path %>
+  <% else %>
+    <p>You have no access to this page.</p>
   <% end %>
-</table>
-<br />
-<%= link_to 'New user', new_user_path %>
+<% end %>

@@ -27,13 +27,15 @@
         </div>
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="#">My Account</a></li>
-          <li><a href="#">My Orders</a></li>
         </ul>
         <ul>
           <li><a href="/categories">Categories</a></li>
         </ul>
         <% if session[:user_id] %>
+          <% if session[:user_roles].map { |h| h["name"] }.include?("customer") %>
+            <li><%= link_to 'My Account', user_path(User.find(session[:user_id])) %></li>
+            <li><a href="/users/<%= session[:user_id] %>/order_history">My Orders</a></li>
+          <% end %>
           <% if session[:user_roles].map { |h| h["name"] }.include?("administrator") %>
             <ul>
               <li><%= link_to 'Orders', orders_path %></li>
@@ -42,15 +44,12 @@
               <li><%= link_to 'Vouchers', vouchers_path %></li>
               <li><%= link_to 'Tags', tags_path %></li>
               <li><%= link_to 'Restaurants', restaurants_path %></li>
-              <li> </li>
-              <li><%= button_to 'Logout', logout_path, method: :delete %></li>
-            </ul>
-          <% else %>
-            <ul>
-              <li><%= link_to 'Profile', user_path(User.find(session[:user_id])) %></li>
-              <li><%= button_to 'Logout', logout_path, method: :delete %></li>
+
             </ul>
           <% end %>
+          <ul>
+            <li><%= button_to 'Logout', logout_path, method: :delete %></li>
+          </ul>
         <% else %>
         <ul>
           <li><%= link_to 'Login', login_path %></li>

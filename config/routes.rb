@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 
   resources :users do
     member do
+      get 'order_history'
       get 'topup'
       patch 'topup' => 'users#set_topup'
     end

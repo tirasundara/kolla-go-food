@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114041609) do
+ActiveRecord::Schema.define(version: 20171116020335) do
 
   create_table "buyers", force: :cascade do |t|
     t.string "name"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20171114041609) do
     t.integer "voucher_id"
     t.decimal "total_price", precision: 8, scale: 2
     t.integer "user_id"
+    t.decimal "distance", precision: 8, scale: 2
   end
 
   create_table "restaurants", force: :cascade do |t|

@@ -4,10 +4,10 @@ class OrdersController < ApplicationController
   before_action :cart_not_empty, only: [:new]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_action :search_order_params, only: [:index]
-  skip_before_action :authorize, only: [:new, :create]
+  # skip_before_action :authorize, only: [:new, :create]
 
   def index
-    @orders = Order.search(search_order_params)
+    @orders = Order.search(search_order_params).order(id: :desc)
     #@orders = Order.all
   end
 
