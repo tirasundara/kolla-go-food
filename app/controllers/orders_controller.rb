@@ -4,10 +4,11 @@ class OrdersController < ApplicationController
   before_action :cart_not_empty, only: [:new]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   before_action :search_order_params, only: [:index]
-  skip_before_action :authorize, only: [:new, :create]
+  # skip_before_action :authorize, only: [:new, :create]
 
   def index
-    @orders = Order.search(search_order_params)
+    @orders = Order.search(search_order_params).order(id: :desc)
+    #@orders = Order.all
   end
 
   def show
@@ -16,6 +17,8 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
+    @user = User.find(session[:user_id])
+    # @voucher = Voucher.find_by(code: params["voucher_code"])
   end
 
   def edit
@@ -23,27 +26,58 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = Order.new(order_params)
-    @order.add_line_items(@cart)
+    @restaurant = Restaurant.find(session[:restaurant_id])
 
-    if params[:voucher_code]
-      voucher = Voucher.find_by(code: params["voucher_code"])
-      @order.voucher = voucher if !voucher.nil?
-      puts "HELLO..."
+    @order = Order.new(order_params)
+    # @order.invalid?
+    @order.origin = @restaurant.address
+
+    @order.add_line_items(@cart)
+    @order.user_id = session[:user_id]
+    @user = User.find(session[:user_id])
+
+    if params["voucher_code"] != ""
+      @order.voucher = Voucher.find_by(code: params["voucher_code"])
+      if @order.voucher.nil?
+        redirect_to new_order_path, notice: 'Voucher not found.'
+        return
+      end
     end
 
-    # @order.calculate_discount
-    @order.total_price = @order.total_price_after_discount
+    begin
+      @order.total_price = @order.total_price_after_discount
+    rescue
+    end
+
+    valid_order = true
+    if @order.payment_type == 'Go Pay'
+      begin
+        if @user.ensure_credit_is_sufficient(session[:user_id], @order.total_price_after_discount)
+          valid_order = true
+          @user.use_credit(@order.total_price)
+        else
+          valid_order = false
+        end
+      rescue
+      end
+    end
+
     respond_to do |format|
-      if @order.save
-        Cart.destroy(session[:cart_id])
-        # @cart.destroy
-        session[:cart_id] = nil
+      if valid_order
+        if @order.save && @user.save
+          Cart.destroy(session[:cart_id])
+          # @cart.destroy
+          session[:cart_id] = nil
+          session[:restaurant_id] = nil
 
-        OrderMailer.received(@order).deliver
+          # OrderMailer.received(@order).deliver
 
-        format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
-        format.json { render :show, status: :created, location: store_index_path }
+          format.html { redirect_to store_index_path, notice: 'Thank you for your order.' }
+          format.json { render :show, status: :created, location: store_index_path }
+        else
+          format.html { render :new }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new }
         format.json { render json: @order.errors, status: :unprocessable_entity }

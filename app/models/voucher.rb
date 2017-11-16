@@ -28,28 +28,28 @@ class Voucher < ApplicationRecord
     end
   end
 
-    def self.avail_voucher?(code_)
-      available = false
-      voucher = Voucher.find_by(code: code_)
-      available = true if !(voucher == nil)
-      available
+  def self.get_voucher_id(code_)
+    if self.avail_voucher?(code_)
+      voucher_id = Voucher.find_by(code: code_).id
+      # voucher_id = voucher.id
+    else
+      voucher_id = nil
     end
-
-    def self.get_voucher_id(code_)
-      if self.avail_voucher?(code_)
-        voucher_id = Voucher.find_by(code: code_).id
-        # voucher_id = voucher.id
-      else
-        voucher_id = nil
-      end
-      voucher_id
-    end
+    voucher_id
+  end
 
   private
     def uppercase_code
       code.upcase! if !code.nil?
     end
 
+    def avail_voucher?(code_)
+      available = false
+      voucher = Voucher.find_by(code: code_)
+      available = true if !(voucher == nil)
+      available
+    end
+    
     def ensure_not_referenced_by_any_order
       unless orders.empty?
         errors.add(:base, 'Order present')

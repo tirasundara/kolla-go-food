@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
 
     if user.try(:authenticate, params[:password])
       session[:user_id] = user.id
+      session[:user_roles] = user.roles
       redirect_to admin_path
     else
       redirect_to login_path, alert: 'Invalid username/password combination'

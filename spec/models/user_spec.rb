@@ -47,7 +47,7 @@ RSpec.describe User, type: :model do
       @user = create(:user)
     end
 
-    it "is invalid with no changes" do
+    it "is invalid with no password changes" do
       expect(@user.valid?).to eq(true)
     end
 

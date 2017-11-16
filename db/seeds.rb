@@ -82,3 +82,11 @@ Buyer.create!(
   phone: "089893060333",
   address: "Jl. Batu Jajar Squad"
 )
+
+Role.delete_all
+Role.create!(
+  name: 'administrator'
+)
+Role.create!(
+  name: 'customer'
+)

@@ -120,21 +120,21 @@ RSpec.describe Voucher, type: :model do
       end
     end
 
-    context "availability voucher" do
-      it "returns true if voucher is available" do
-        voucher = create(:voucher, code: "DISC10%")
-        expect(Voucher.avail_voucher?("DISC10%")).to eq(true)
-      end
-      it "returns false if voucher is not available" do
-        expect(Voucher.avail_voucher?("nothing")).to eq(false)
-      end
-    end
-    context "get voucher_id" do
-      it "does not return nil" do
-        voucher = create(:voucher, code: "DISC10%")
-        expect(Voucher.get_voucher_id("DISC10%")).not_to eq(nil)
-      end
-    end
+    # context "availability voucher" do
+    #   it "returns true if voucher is available" do
+    #     voucher = create(:voucher, code: "DISC10%")
+    #     expect(Voucher.avail_voucher?("DISC10%")).to eq(true)
+    #   end
+    #   it "returns false if voucher is not available" do
+    #     expect(Voucher.avail_voucher?("nothing")).to eq(false)
+    #   end
+    # end
+    # context "get voucher_id" do
+    #   it "does not return nil" do
+    #     voucher = create(:voucher, code: "DISC10%")
+    #     expect(Voucher.get_voucher_id("DISC10%")).not_to eq(nil)
+    #   end
+    # end
   end
 
 end

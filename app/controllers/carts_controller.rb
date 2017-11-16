@@ -1,7 +1,7 @@
 class CartsController < ApplicationController
   before_action :set_cart, only: [:show, :edit, :update, :destroy]
   skip_before_action :authorize, only: [:create, :update, :destroy]
-  
+
   # GET /carts
   # GET /carts.json
   def index
@@ -57,6 +57,7 @@ class CartsController < ApplicationController
   def destroy
     if @cart.id == session[:cart_id]
       session[:cart_id] = nil
+      session[:restaurant_id] = nil
       @cart.destroy
       notice = 'Cart was successfully destroyed.'
     else

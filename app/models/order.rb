@@ -1,4 +1,9 @@
+require 'google_maps_service'
+
 class Order < ApplicationRecord
+  attr_accessor :origin
+  PRICE_PER_KM = 1500.0
+
   # before_save :validate_voucher_existence
   has_many :line_items, dependent: :destroy
   belongs_to :voucher, optional: true
@@ -17,6 +22,7 @@ class Order < ApplicationRecord
   validates :payment_type, inclusion: payment_types.keys
   # validate :validate_voucher_existence
   validate :validate_voucher_date
+  validate :validate_address
 
   def add_line_items(cart)
     cart.line_items.each do |item|
@@ -29,18 +35,14 @@ class Order < ApplicationRecord
 
   def calculate_discount
     disc = 0.00
-    return disc if voucher == nil
-    return disc if voucher.not_expired? == false
-    if voucher.unit == "IDR"
-      if voucher.amount <= voucher.max_amount
+    if !voucher.nil? && voucher.not_expired?
+      if voucher.unit == "IDR"
         disc = voucher.amount
-      elsif
-        disc = voucher.max_amount
-      end
-    else
-      disc = sub_total_price * (voucher.amount/100.0)
-      if disc > voucher.max_amount
-        disc = voucher.max_amount
+      else  # unit = "percent"
+        disc = sub_total_price * (voucher.amount/100.0)
+        if disc > voucher.max_amount
+          disc = voucher.max_amount
+        end
       end
     end
     disc
@@ -51,7 +53,7 @@ class Order < ApplicationRecord
   end
 
   def total_price_after_discount
-    tot_price = sub_total_price - calculate_discount
+    tot_price = (sub_total_price + delivery_cost) - calculate_discount
     if tot_price < 0.0
       return 0.00
     else
@@ -60,7 +62,24 @@ class Order < ApplicationRecord
     end
   end
 
+
+  def get_distance
+    gmaps = GoogleMapsService::Client.new(key: 'AIzaSyBtGoQM9mdzHQiyjcxpxfJmSfjK0rUbGEI')
+    distance_matrix = gmaps.distance_matrix(origin, address)
+    distance = distance_matrix[:rows][0][:elements][0][:distance][:value] / 1000.0
+    self.distance = distance.to_f.round(2)
+    distance.to_f.round(2)
+  end
+
+  def delivery_cost
+    delivery_cost = 0
+    delivery_cost = PRICE_PER_KM * get_distance
+    delivery_cost = PRICE_PER_KM if get_distance < 1.0
+    delivery_cost.ceil
+  end
+
   private
+
     def validate_voucher_date
       if !voucher.nil?
         now = Time.now
@@ -86,5 +105,15 @@ class Order < ApplicationRecord
         orders = all
       end
       orders
+    end
+
+    def validate_address
+      if address != ""
+        # Setup API keys
+        gmaps = GoogleMapsService::Client.new(key: 'AIzaSyBtGoQM9mdzHQiyjcxpxfJmSfjK0rUbGEI')
+        distance_matrix = gmaps.distance_matrix(address, address)
+        status = distance_matrix[:rows][0][:elements][0][:status]
+        errors.add(:address, "is invalid") if status == "NOT_FOUND"
+      end
     end
 end

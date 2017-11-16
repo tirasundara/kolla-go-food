@@ -53,10 +53,34 @@ RSpec.describe UsersController, type: :controller do
       user = create(:user)
       session[:user_id] = user.id
     end
-    before :each do
-      @user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
+
+    it "assigns 200000 credit to new users" do
+      user = create(:user)
+      expect(user.credit).to eq 200000.00
     end
 
+    it "saves the new user in the database" do
+      role1 = create(:role)
+      role2 = create(:role)
+      user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
+      expect {
+        post :create, params: { user: attributes_for(:user, role_ids: [role1.id, role2.id]) }
+      }.to change(User, :count).by(1)
+    end
+
+    it "will assign customer as default role when role is empty" do
+      role1 = create(:role)
+      role2 = create(:role)
+      user = create(:user, password: 'oldpassword', password_confirmation: 'oldpassword')
+      expect {
+        post :create, params: { user: attributes_for(:user, role_ids: []) }
+      }.to change(UserRole, :count).by(1)
+    end
+
+    it "is redirects to user#show" do
+      post :create, params: { user: attributes_for(:user) }
+      expect(response).to redirect_to(user_path(assigns[:user]))
+    end
   end
 
   describe "PATCH #update" do
@@ -75,7 +99,7 @@ RSpec.describe UsersController, type: :controller do
 
       it "redirects to user#index" do
         patch :update, params: { id: @user, user: attributes_for(:user) }
-        expect(response).to redirect_to users_path
+        expect(response).to redirect_to(user_path(assigns[:user]))
       end
 
       it "disables login with old password" do
@@ -110,6 +134,38 @@ RSpec.describe UsersController, type: :controller do
     it "redirects to user#index" do
       delete :destroy, params: { id: @user }
       expect(response).to redirect_to users_path
+    end
+  end
+
+  describe "top up amount" do
+    before :each do
+      @user = create(:user)
+    end
+
+    context "with valid amount" do
+      it "will add the value of credit with amount" do
+        patch :set_topup, params: { id: @user, amount: 1.0 }
+        @user.reload
+        expect(@user.credit.to_f).to eq(200001.0)
+      end
+
+      it "redirects to top up page" do
+        patch :set_topup, params: { id: @user }
+        expect(response).to redirect_to topup_user_path
+      end
+    end
+
+    context "with invalid amount" do
+      it "will not add the value of credit" do
+        patch :set_topup, params: { id: @user, amount: "1a" }
+        @user.reload
+        expect(@user.credit.to_f).to eq(200000.0)
+      end
+
+      it "redirects to top up page" do
+        patch :set_topup, params: { id: @user }
+        expect(response).to redirect_to topup_user_path
+      end
     end
   end
 end

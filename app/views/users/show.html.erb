@@ -1,8 +1,12 @@
 <p id="notice"><%= notice %></p>
-
+<h1>Your Account</h1>
 <p>
   <strong>Username:</strong>
   <%= @user.username %>
+</p>
+<p>
+  <strong>Go Pay Balance:</strong>
+  <%= @user.credit %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %>

@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Username:</strong>
+  <%= @user.username %>
+</p>
+
+<p>
+  <strong>Current Balance:</strong>
+  <%= @user.credit %>
+</p>
+
+<%= form_for user_path, method: :patch do |f| %>
+  <fieldset>
+    <legend>Top Up GoPay Credit</legend>
+    <div class="field">
+      <%= text_field_tag :amount, params[:amount] %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit 'Top Up' %>
+    </div>
+  </fieldset>
+<% end %>

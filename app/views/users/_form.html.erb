@@ -27,6 +27,13 @@
       <%= f.password_field :password_confirmation, size: 40 %>
     </div>
 
+    <% if session[:user_roles].map { |h| h["name"] }.include?("administrator") %>
+      <div class="field">
+        <%= f.label :roles %>
+        <%= f.collection_check_boxes :role_ids, Role.all, :id, :name %>
+      </div>
+    <% end %>
+
     <div class="actions">
       <%= f.submit %>
     </div>

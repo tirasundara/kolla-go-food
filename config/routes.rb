@@ -12,14 +12,13 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
-
   resources :carts
   resources :buyers
   resources :foods
   resources :line_items
   resources :categories
   resources :orders
-  resources :users
+  # resources :users
   resources :vouchers
   resources :tags
   resources :restaurants
@@ -33,7 +32,13 @@ Rails.application.routes.draw do
     resources :reviews
   end
 
-
+  resources :users do
+    member do
+      get 'order_history'
+      get 'topup'
+      patch 'topup' => 'users#set_topup'
+    end
+  end
 
   # get 'home/hello'
   # get 'home/goodbye'

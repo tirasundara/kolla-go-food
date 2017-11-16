@@ -1,10 +1,9 @@
 FactoryGirl.define do
   factory :order do
-    association :voucher
     name { Faker::Name.name }
-    address { Faker::Address.street_address }
+    address "Monas"
     email { Faker::Internet.email }
-    payment_type "Cash"
+    payment_type "Go Pay"
   end
   factory :invalid_order, parent: :order do
     name nil
